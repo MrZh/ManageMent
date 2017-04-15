@@ -268,5 +268,16 @@ namespace Yang.Management.Repository
             }
 
         }
+
+        public static int BaseGetCountByParam(BaseQuery query)
+        {
+            using (IDbConnection conn = new SqlConnection(ConnString))
+            {
+                conn.Open();
+                int count = conn.QueryFirst(query.Sql, query.Obj);
+                conn.Close();
+                return count;
+            }
+        }
     }
 }

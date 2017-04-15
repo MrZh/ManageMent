@@ -29,12 +29,13 @@
         <li class="layui-nav-item"><a href="">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新增部门</h1>
+        <h1 class="layui-colla-title title-from">修改部门</h1>
         <form class="layui-form form-them" action="">
+            <input type="hidden" name="Id" value="@ViewBag.Id" />
             <div class="layui-form-item">
                 <label class="layui-form-label">部门名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Name" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
+                    <input type="text" id="Name" name="Name" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -48,13 +49,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">部门简介</label>
                 <div class="layui-input-block" style="height:200px">
-                    <textarea name="Description" lay-verify="title" autocomplete="off" placeholder="请输入职务简介" class="layui-input" style="height:100%"></textarea>
+                    <textarea name="Description" id="Description" lay-verify="title" autocomplete="off" placeholder="请输入职务简介" class="layui-input" style="height:100%"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">部门职责</label>
                 <div class="layui-input-block" style="height:200px">
-                    <textarea name="Responsibility" lay-verify="title" autocomplete="off" placeholder="请输入职务职责" class="layui-input" style="height:200px"></textarea>
+                    <textarea name="Responsibility" id="Responsibility" lay-verify="title" autocomplete="off" placeholder="请输入职务职责" class="layui-input" style="height:200px"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -89,6 +90,16 @@
                 return false;
             });
 
+            $.get("/Department/GetDepartment", { id: '@ViewBag.id' }, function (result) {
+
+                $("#Name").val(result.Data.Name);
+                $("#department-data").val(result.Data.ParentDepartmentId);
+                $("#Description").val(result.Data.Description);
+                $("#Responsibility").val(result.Data.Responsibility);
+                form.render();
+                return false;
+            });
+
             form.verify({
                 title: function (value) {
                     if (value.length < 5) {
@@ -98,11 +109,11 @@
             });
             //监听提交
             form.on('submit(demo1)', function (data) {
-                $.post("/Department/Create", data.field, function (result) {
+                $.post("/Department/Edit", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加部门成功", function () {
+                        layer.msg("修改部门成功", function () {
                             window.location.href = "/Department/Index";
-                        })                      
+                        })
                     }
                 });
                 return false;
