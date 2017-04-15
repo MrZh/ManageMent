@@ -1,0 +1,193 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>人事管理系统</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-header">
+        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+    </div>
+    <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
+        <li class="layui-nav-item layui-this"><a href="/Attendance/Index">考勤管理</a></li>
+        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+        <li class="layui-nav-item"><a href="">个人信息</a></li>
+        <li class="layui-nav-item"><a href="">密码修改</a></li>
+    </ul>
+    <div class="layui-site-content ">
+        <h1 class="layui-colla-title title-from">考勤管理</h1>
+        <div class="layui-clear search-box">
+            <div class="site-left">
+                <div class="site-content">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">关键字</label>
+                        <div class="layui-input-inline">
+                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="site-right">
+                <button class="layui-btn layui-btn-normal">搜索</button>
+            </div>
+        </div>
+        <div class="button-box">
+            @*<button class="layui-btn" id="add">新增人员</button>
+            <button class="layui-btn">修改人员</button>
+            <button class="layui-btn">员工离职</button>
+            <button class="layui-btn">人事变动</button>
+            <button class="layui-btn">员工转正</button>
+            <button class="layui-btn layui-btn-danger">删除人员</button>*@
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                        <th>姓名</th>
+                        <th>年份/月份</th>
+                        <th>是否迟到</th>
+                        <th>考勤时间</th>
+                    </tr>
+                </thead>
+                <tbody id="news-data">
+                    <tr>
+                        <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
+                        <td>贤心</td>
+                        <td>汉族</td>
+                        <td>1989-10-14</td>
+                        <td>人生似修行</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
+                        <td>张爱玲</td>
+                        <td>汉族</td>
+                        <td>1920-09-30</td>
+                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
+                        <td>Helen Keller</td>
+                        <td>拉丁美裔</td>
+                        <td>1880-06-27</td>
+                        <td> Life is either a daring adventure or nothing.</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
+                        <td>岳飞</td>
+                        <td>汉族</td>
+                        <td>1103-北宋崇宁二年</td>
+                        <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
+                    </tr>
+                    <tr>
+                        <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
+                        <td>孟子</td>
+                        <td>华夏族（汉族）</td>
+                        <td>公元前-372年</td>
+                        <td>猿强，则国强。国强，则猿更强！ </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div id="demo1" class="page-box"></div>
+    </div>
+    <script src="~/Content/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/jquery.tmpl.min.js"></script>
+    <script type="text/x-jquery-tmpl" id="news-tmpl">
+        <tr>
+            <td><input type="checkbox" name="" value="${Name}" lay-skin="primary"></td>
+            <td>${Name}</td>
+            <td>汉族</td>
+            <td>1989-10-14</td>
+            <td>人生似修行</td>
+        </tr>
+    </script>
+    <script>
+
+    //一般直接写在一个js文件中
+    layui.use(['jquery','layer', 'form', 'element','laypage'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            form = layui.form(),
+            element = layui.element(),
+            laypage = layui.laypage;
+
+        $.get("/News/GetNewsList", { pageIndex: 1,pageSize:10 }, function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            laypage({
+                cont: 'demo1'
+                ,pages: result.TotalPage //总页数
+                , groups: 5 //
+                , jump: function (result) {
+                    getPage(result);
+                }
+            });
+            render(result.data);
+            form.render();
+            return false;
+        });
+
+        var getPage = function (obj) {
+            $.get("/News/GetNewsList", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                render(result.data);
+                console.log(result.data);
+                form.render();
+                return false;
+            });
+        }
+
+        var render = function (data) {
+            $("#news-data").empty();
+            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+
+        }
+
+        laypage({
+            cont: 'demo1'
+            ,pages: 100 //总页数
+            ,groups: 5 //连续显示分页数
+        });
+         //全选
+        form.on('checkbox(allChoose)', function(data){
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function(index, item){
+            item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        $(function(){
+            $('#add').click(function(){
+                $("input[type='checkbox']").each(function(){
+                    if($(this).is(":checked")){
+                        console.log($(this).val());
+                    }
+                })
+            })
+        })
+    });
+    </script>
+</body>
+</html>

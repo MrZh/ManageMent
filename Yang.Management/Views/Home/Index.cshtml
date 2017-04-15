@@ -1,0 +1,104 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用Layui</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-header">
+        <p class="login-fun">欢迎您<span>1111</span><a class="layui-btn layui-btn-normal">退出</a></p>
+    </div>
+    <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item layui-this"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
+        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+        <li class="layui-nav-item"><a href="">个人信息</a></li>
+        <li class="layui-nav-item"><a href="">密码修改</a></li>
+    </ul>
+    <div class="layui-site-content ">
+        <div class="layui-clear">
+            <div class="site-left">
+                <div class="site-content">
+                    <ul class="news-box">
+                        <li class="notice">
+                            <fieldset class="layui-elem-field">
+                                <legend>公告通知</legend>
+                                <ol class="layui-field-box news-item" id="news-data">
+                                    
+                                    <li><a href="#">关于五一的放假通知</a></li>
+                                    <li>关于五一的放假通知</li>
+                                    <li>关于五一的放假通知</li>
+                                    <li>关于五一的放假通知</li>
+                                </ol>
+                                <a class="more">更多...</a>
+                            </fieldset>
+                        </li>
+                        <li class="news">
+                            <fieldset class="layui-elem-field">
+                                <legend>新闻消息</legend>
+                                <ol class="layui-field-box news-item">
+                                    <li>关于五一的放假通知</li>
+                                    <li>关于五一的放假通知</li>
+                                    <li>关于五一的放假通知</li>
+                                    <li>关于五一的放假通知</li>
+                                </ol>
+                                <a class="more">更多...</a>
+                            </fieldset>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="site-right">
+                <div class="sign">
+                    <button class="layui-btn layui-btn-normal">签到</button>
+                </div>
+                <fieldset class="layui-elem-field">
+                    <legend>近期签到记录</legend>
+                    <ol class="layui-field-box news-item">
+                        <li>2016年11月11日签到</li>
+                        <li>2016年11月11日签到</li>
+                        <li>2016年11月11日签到</li>
+                        <li>2016年11月11日签到</li>
+                    </ol>
+                    <a class="more">更多</a>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/jquery.tmpl.min.js"></script>
+    <script type="text/x-jquery-tmpl" id="news-tmpl">
+        <li>${name}${id}</li>
+    </script>
+    <script>
+
+    //一般直接写在一个js文件中
+    layui.use(['jquery','layer', 'form', 'element'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            form = layui.form(),
+            element = layui.element();
+
+        $.get("/News/GetIndexNews", { type: "type" }, function (result) {
+            $("#news-tmpl").tmpl(result).appendTo("#news-data");
+            console.log(result);
+            return false;
+        });
+    });
+    </script>
+</body>
+</html>

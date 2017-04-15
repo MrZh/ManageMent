@@ -1,0 +1,61 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<!--[if IE 8]> <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html lang="en">
+ <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>开始使用Layui</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body style="background: #0ca3d2;">
+    <div class="container">
+        <div class="login">
+            <h1>登录</h1>
+            <form action="" class="layui-form">
+                <p><input type="text" name="userName" id="userName" lay-verify="title" autocomplete="off" placeholder="请输入用户名" class="layui-input"></p>
+                <p><input type="password" id="passWord" name="passWord" lay-verify="pass" placeholder="请输入密码" autocomplete="off" class="layui-input"></p>
+                <p class="remember_me">
+                </p>
+                <p class="submit"> <button id="login" class="layui-btn" lay-submit="" lay-filter="demo1">登录</button></p>
+            </form>
+        </div>
+        <div class="login-help">
+            <p>忘记您的密码请联系管理员</p>
+        </div>
+    </div>
+    <script src="~/Content/layui/layui.js"></script>
+    <script>
+
+        //一般直接写在一个js文件中
+        layui.use(['jquery', 'layer', 'form', 'element'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                form = layui.form(),
+                element = layui.element();
+            form.verify({
+                title: function (value) {
+                    if (value.length < 5) {
+                        return '标题至少得5个字符啊';
+                    }
+                }
+                , pass: [/(.+){6,12}$/, '密码必须6到12位']
+            });
+            form.on('submit(demo1)', function (data) {
+                console.log(data);
+                $.post("/Login/Login", data.field, function (result) {
+                    console.log(result);
+                    return false; 
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>
