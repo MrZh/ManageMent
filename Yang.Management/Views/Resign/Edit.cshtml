@@ -22,35 +22,33 @@
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
         <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
         <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item layui-this"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item layui-this"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
         <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
         <li class="layui-nav-item"><a href="">个人信息</a></li>
         <li class="layui-nav-item"><a href="">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新增新闻</h1>
+        <h1 class="layui-colla-title title-from">修改职务</h1>
         <form class="layui-form form-them" action="">
+            <input type="hidden" name="Id" value="@ViewBag.Id"/>
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻标题</label>
+                <label class="layui-form-label">职务名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Title" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
+                    <input type="text" name="Name" id="Name" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻类别</label>
-                <div class="layui-input-block">
-                    <select name="NewsTypeId" id="news-type-data" lay-filter="aihao">
-                        <option value="0" selected="selected">新闻</option>
-                        <option value="1">公告</option>
-                    </select>
+                <label class="layui-form-label">职务简介</label>
+                <div class="layui-input-block" style="height:200px">
+                    <textarea name="Description" id="Description" lay-verify="title" autocomplete="off" placeholder="请输入职务简介" class="layui-input" style="height:200px"></textarea>
                 </div>
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻内容</label>
-                <div class="layui-input-block">
-                    <textarea id="Content" name="Contents" style="display: none;"></textarea>
+                <label class="layui-form-label">职务职责</label>
+                <div class="layui-input-block" style="height:200px">
+                    <textarea name="Responsibility" id="Responsibility" lay-verify="title" autocomplete="off" placeholder="请输入职务职责" class="layui-input" style="height:200px"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -64,32 +62,16 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-type-tmpl">
-        <option value="${name}">${id}</option>
-    </script>
     <script>
 
         //一般直接写在一个js文件中
-        layui.use(['jquery', 'layer', 'form', 'element', 'laypage', 'laydate','layedit'], function () {
+        layui.use(['jquery', 'layer', 'form', 'element', 'laypage', 'laydate'], function () {
             var $ = layui.jquery,
                 layer = layui.layer,
                 form = layui.form(),
-                layedit = layui.layedit,
                 element = layui.element(),
                 laypage = layui.laypage,
                 laydate = layui.laydate;
-
-            layedit.set({
-                uploadImage: {
-                    url: '/Upload/Upload' 
-                }
-            });
-            var index = layedit.build('Content');
-            //$.get("/News/GetIndexNews", { type: "type" }, function (result) {
-            //    $("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-            //    form.render();
-            //    return false;
-            //});
 
             form.verify({
                 title: function (value) {
@@ -98,14 +80,22 @@
                     }
                 }
             });
+
+            $.get("/Resign/GetResign", { id: '@ViewBag.id' }, function (result) {
+
+                $("#Name").val(result.Data.Name);
+                $("#Description").val(result.Data.Description);
+                $("#Responsibility").val(result.Data.Responsibility);
+                form.render();
+                return false;
+            });
+
             //监听提交
             form.on('submit(demo1)', function (data) {
-                data.field.Contents = layedit.getContent(index);
-                console.log(data.field);
-                $.post("/News/Create", data.field, function (result) {
+                $.post("/Resign/Edit", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加新闻成功", function () {
-                            window.location.href = "/News/Index";
+                        layer.msg("添加职务成功", function () {
+                            window.location.href = "/Resign/Index";
                         })
                     }
                 });

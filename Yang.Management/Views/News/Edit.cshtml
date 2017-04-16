@@ -31,10 +31,11 @@
     <div class="layui-site-content ">
         <h1 class="layui-colla-title title-from">新增新闻</h1>
         <form class="layui-form form-them" action="">
+            <input type="hidden" name="Id" value="@ViewBag.Id" />
             <div class="layui-form-item">
                 <label class="layui-form-label">新闻标题</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Title" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
+                    <input type="text" name="Title" id="Title" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -81,7 +82,7 @@
 
             layedit.set({
                 uploadImage: {
-                    url: '/Upload/Upload' 
+                    url: '/Upload/Upload'
                 }
             });
             var index = layedit.build('Content');
@@ -90,6 +91,16 @@
             //    form.render();
             //    return false;
             //});
+
+            $.get("/News/GetNewsDetail", { id: '@ViewBag.id' }, function (result) {
+
+                $("#Title").val(result.Data.Title);
+                $("#news-type-data").val(result.Data.NewsTypeId);
+                $("#Content").text(result.Data.Contents);
+                index= layedit.build('Content');
+                form.render();
+                return false;
+            });
 
             form.verify({
                 title: function (value) {
@@ -102,7 +113,7 @@
             form.on('submit(demo1)', function (data) {
                 data.field.Contents = layedit.getContent(index);
                 console.log(data.field);
-                $.post("/News/Create", data.field, function (result) {
+                $.post("/News/Edit", data.field, function (result) {
                     if (result.Status == 200) {
                         layer.msg("添加新闻成功", function () {
                             window.location.href = "/News/Index";

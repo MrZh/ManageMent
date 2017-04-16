@@ -23,5 +23,11 @@ namespace Yang.Management.Entity.DataEntity
 
         [StringLength(255)]
         public string AttendanceIp { get; set; }
+
+        [StringLength(255)]
+        public string AttendanceYear { get; set; }
+
+        [StringLength(255)]
+        public string AttendanceMonth { get; set; }
     }
 }

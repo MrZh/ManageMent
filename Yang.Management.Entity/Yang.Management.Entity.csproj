@@ -61,6 +61,7 @@
     <Compile Include="ListEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DataEntity\Resign.cs" />
+    <Compile Include="ViewEntity\ListAttendanceLogEntity.cs" />
     <Compile Include="ViewEntity\ListDepartmentEntity.cs" />
     <Compile Include="ViewEntity\ListResignEntity.cs" />
     <Compile Include="ViewEntity\ListUserEntity.cs" />

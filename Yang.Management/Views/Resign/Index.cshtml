@@ -36,13 +36,13 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">关键字</label>
                         <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                            <input type="text" lay-verify="title" id="key" autocomplete="off" placeholder="请输入关键字" class="layui-input">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="site-right">
-                <button class="layui-btn layui-btn-normal">搜索</button>
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
             </div>
         </div>
         <div class="button-box">
@@ -116,7 +116,7 @@
         <tr>
             <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
             <td>${Name}</td>
-            <td>${ParentDepartmentName}</td>
+            <td>${Responsibility}</td>
             <td>${CreateTime}</td>
             <td>${Description}</td>
         </tr>
@@ -130,8 +130,8 @@
             form = layui.form(),
             element = layui.element(),
             laypage = layui.laypage;
-
-        $.get("/Resign/GetDepartments", { pageIndex: 1,pageSize:10 }, function (result) {
+        var keyword = "";
+        $.get("/Resign/GetResigns", { key: keyword,pageIndex: 1,pageSize:2 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -141,24 +141,42 @@
                     getPage(result);
                 }
             });
-            render(result.data);
+            render(result.Data.Entity);
             form.render();
             return false;
         });
 
         var getPage = function (obj) {
-            $.get("/Resign/GetDepartments", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+            $.get("/Resign/GetResigns", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-                render(result.data);
-                console.log(result.data);
+                render(result.Data.Entity);
+                console.log(result.Data);
+                form.render();
+                return false;
+            });
+        }
+
+        var search = function () {
+            keyword = $("#key").val();
+            $.get("/Resign/GetResigns", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                laypage({
+                    cont: 'demo1'
+                    , pages: result.Data.TotalPage //总页数
+                    , groups: 5 //
+                    , jump: function (result) {
+                        getPage(result);
+                    }
+                });
+                render(result.Data.Entity);
                 form.render();
                 return false;
             });
         }
 
         var render = function (data) {
-            $("#news-data").empty();
-            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+            $("#resign-data").empty();
+            $("#resign-tmpl").tmpl(data).appendTo("#resign-data");
 
         }
 

@@ -147,6 +147,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Base\CutString.cs" />
     <Compile Include="Base\Result.cs" />
     <Compile Include="Controllers\AttendanceController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
@@ -319,6 +320,8 @@
     <Content Include="Views\Attendance\Index.cshtml" />
     <Content Include="Views\MyAttendance\Index.cshtml" />
     <Content Include="Views\Department\Edit.cshtml" />
+    <Content Include="Views\Resign\Edit.cshtml" />
+    <Content Include="Views\News\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

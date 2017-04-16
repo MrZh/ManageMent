@@ -39,6 +39,24 @@ namespace Yang.Management.Controllers
             };
         }
 
+        public ActionResult Edit(string id)
+        {
+            ViewBag.id = id;
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult Edit(Resign entity)
+        {
+            entity.CreateTime = DateTime.Now;
+            this.iResignRepository.Save(entity);
+
+            return new JsonResult
+            {
+                Data = new Result(null)
+            };
+        }
+
         public JsonResult DeleteResigns(string id)
         {
             string[] ids = id.Split(',');

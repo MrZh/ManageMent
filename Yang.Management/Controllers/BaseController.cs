@@ -12,7 +12,7 @@ namespace Yang.Management.Controllers
         {
             get
             {
-                return Session["CurrentUserId"].ToString();
+                return "";
             }
             
         }

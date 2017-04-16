@@ -49,8 +49,8 @@ namespace Yang.Management.Repository.Repository
             {
                 return new ListEntity<ListResignEntity>(list, total, pageIndex, pageSize);
             }
-            List<string> ids = this.context.Department.Where(c => c.Name.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
-            BaseQuery query = new BaseQuery("SELECT Id,Name,Description,CreateTime FROM Resign as de where id in @ids", new { ids = ids });
+            List<string> ids = this.context.Resign.Where(c => c.Name.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
+            BaseQuery query = new BaseQuery("SELECT Id,Name,Description,CreateTime,Responsibility FROM Resign as de where id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListResignEntity>(query);
             return new ListEntity<ListResignEntity>(list, total, pageIndex, pageSize);
         }

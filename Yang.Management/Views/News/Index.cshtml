@@ -36,19 +36,19 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">关键字</label>
                         <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                            <input type="text" lay-verify="title" id="key" autocomplete="off" placeholder="请输入关键字" class="layui-input">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="site-right">
-                <button class="layui-btn layui-btn-normal">搜索</button>
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
             </div>
         </div>
         <div class="button-box">
-            <button class="layui-btn" id="add">新增</button>
-            <button class="layui-btn">修改</button>
-            <button class="layui-btn layui-btn-danger">删除</button>
+            <button class="layui-btn" id="addBtn">新增</button>
+            <button class="layui-btn" id="modifyBtn">修改</button>
+            <button class="layui-btn layui-btn-danger" id="delBtn">删除</button>
         </div>
         <div class="layui-form">
             <table class="layui-table">
@@ -130,12 +130,13 @@
             form = layui.form(),
             element = layui.element(),
             laypage = layui.laypage;
+        keyword = "";
 
-        $.get("/News/GetNews", { pageIndex: 1,pageSize:10 }, function (result) {
+        $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
-                , pages: result.Data.TotalNumber //总页数
+                , pages: result.Data.TotalPage //总页数
                 , groups: 5 //
                 , jump: function (result) {
                     getPage(result);
@@ -147,10 +148,29 @@
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNews", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+            $.get("/News/GetNews", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                // console.log(result.data);
+                form.render();
+                return false;
+            });
+        }
+
+
+        var search = function () {
+            keyword = $("#key").val();
+            $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                laypage({
+                    cont: 'demo1'
+                    , pages: result.Data.TotalPage //总页数
+                    , groups: 5 //
+                    , jump: function (result) {
+                        getPage(result);
+                    }
+                });
+                render(result.Data.Entity);
                 form.render();
                 return false;
             });
@@ -182,6 +202,65 @@
                         console.log($(this).val());
                     }
                 })
+            })
+
+            $("#searchBtn").click(function () {
+                search();
+            });
+
+            $("#addBtn").click(function () {
+                window.location.href = "/News/Create";
+            })
+
+            $("#modifyBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能修改一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要修改的部门");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/News/Edit?id=" + id[0];
+            })
+
+            $("#delBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+
+                if (id.length < 1) {
+                    layer.msg("请选中要删除的部门");
+                    return false;
+                }
+
+
+
+                $.get("/News/DeleteNews", { id: id.join(',') }, function (result) {
+                    if (result.Status == 200) {
+                        window.location.reload(true);
+                    } else {
+                        layer.msg(result.Message);
+                    }
+                    return false;
+                });
+                console.log(id);
             })
         })
     });
