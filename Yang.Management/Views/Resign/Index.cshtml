@@ -46,9 +46,9 @@
             </div>
         </div>
         <div class="button-box">
-            <button class="layui-btn" id="add">新增职务</button>
-            <button class="layui-btn">修改职务</button>
-            <button class="layui-btn layui-btn-danger">删除职务</button>
+            <button class="layui-btn" id="addBtn">新增职务</button>
+            <button class="layui-btn" id="modifyBtn">修改职务</button>
+            <button class="layui-btn layui-btn-danger" id="delBtn">删除职务</button>
         </div>
         <div class="layui-form">
             <table class="layui-table">
@@ -68,7 +68,7 @@
                         <th>职务职责</th>
                     </tr>
                 </thead>
-                <tbody id="news-data">
+                <tbody id="resign-data">
                     <tr>
                         <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
                         <td>贤心</td>
@@ -112,13 +112,13 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-tmpl">
+    <script type="text/x-jquery-tmpl" id="resign-tmpl">
         <tr>
-            <td><input type="checkbox" name="" value="${Name}" lay-skin="primary"></td>
+            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
             <td>${Name}</td>
-            <td>汉族</td>
-            <td>1989-10-14</td>
-            <td>人生似修行</td>
+            <td>${ParentDepartmentName}</td>
+            <td>${CreateTime}</td>
+            <td>${Description}</td>
         </tr>
     </script>
     <script>
@@ -131,11 +131,11 @@
             element = layui.element(),
             laypage = layui.laypage;
 
-        $.get("/News/GetNewsList", { pageIndex: 1,pageSize:10 }, function (result) {
+        $.get("/Resign/GetDepartments", { pageIndex: 1,pageSize:10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
-                ,pages: result.TotalPage //总页数
+                , pages: result.Data.TotalPage //总页数
                 , groups: 5 //
                 , jump: function (result) {
                     getPage(result);
@@ -147,7 +147,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNewsList", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+            $.get("/Resign/GetDepartments", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.data);
                 console.log(result.data);
@@ -175,6 +175,7 @@
             });
             form.render('checkbox');
         });
+
         $(function(){
             $('#add').click(function(){
                 $("input[type='checkbox']").each(function(){
@@ -182,6 +183,65 @@
                         console.log($(this).val());
                     }
                 })
+            })
+
+            $("#searchBtn").click(function () {
+                search();
+            });
+
+            $("#addBtn").click(function () {
+                window.location.href = "/Resign/Create";
+            })
+
+            $("#modifyBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能修改一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要修改的职务");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/Resign/Edit?id=" + id[0];
+            })
+
+            $("#delBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+
+                if (id.length < 1) {
+                    layer.msg("请选中要删除的职务");
+                    return false;
+                }
+
+
+
+                $.get("/Resign/DeleteResigns", { id: id.join(',') }, function (result) {
+                    if (result.Status == 200) {
+                        window.location.reload(true);
+                    } else {
+                        layer.msg(result.Message);
+                    }
+                    return false;
+                });
+                console.log(id);
             })
         })
     });

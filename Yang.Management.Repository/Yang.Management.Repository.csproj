@@ -56,9 +56,11 @@
     <Compile Include="DapperContext.cs" />
     <Compile Include="DataContext.cs" />
     <Compile Include="IDepartmentRepository.cs" />
+    <Compile Include="IResignRepository.cs" />
     <Compile Include="IUserInfoRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\DepartmentRepository.cs" />
+    <Compile Include="Repository\ResignRepository.cs" />
     <Compile Include="Repository\UserInfoRepository.cs" />
   </ItemGroup>
   <ItemGroup>

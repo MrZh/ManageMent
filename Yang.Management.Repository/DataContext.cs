@@ -22,6 +22,8 @@ namespace Yang.Management.Repository
         public virtual DbSet<UserLogin> UserLogin { get; set; }
         public virtual DbSet<UserModifyLog> UserModifyLog { get; set; }
 
+        public virtual DbSet<Resign> Resign { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AttendanceLog>()

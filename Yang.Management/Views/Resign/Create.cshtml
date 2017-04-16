@@ -39,15 +39,15 @@
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">职务简介</label>
-                <div class="layui-input-block">
-                    <textarea name="Description" lay-verify="title" autocomplete="off" placeholder="请输入职务简介" class="layui-input"></textarea>
+                <div class="layui-input-block" style="height:200px">
+                    <textarea name="Description" lay-verify="title" autocomplete="off" placeholder="请输入职务简介" class="layui-input" style="height:200px"></textarea>
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">职务职责</label>
-                <div class="layui-input-block">
-                    <textarea name="IdentificationCard" lay-verify="title" autocomplete="off" placeholder="请输入职务职责" class="layui-input"></textarea>
+                <div class="layui-input-block" style="height:200px">
+                    <textarea name="Responsibility" lay-verify="title" autocomplete="off" placeholder="请输入职务职责" class="layui-input" style="height:200px"></textarea>
                 </div>
             </div>
             <div class="layui-form-item">
@@ -61,9 +61,6 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-tmpl">
-        <option value="${name}">${id}</option>
-    </script>
     <script>
 
         //一般直接写在一个js文件中
@@ -75,13 +72,6 @@
                 laypage = layui.laypage,
                 laydate = layui.laydate;
 
-            $.get("/News/GetIndexNews", { type: "type" }, function (result) {
-                $("#news-tmpl").tmpl(result).appendTo("#news-data");
-                form.render();
-                console.log(result);
-                return false;
-            });
-
             form.verify({
                 title: function (value) {
                     if (value.length < 5) {
@@ -91,9 +81,13 @@
             });
             //监听提交
             form.on('submit(demo1)', function (data) {
-                layer.alert(JSON.stringify(data.field), {
-                    title: '最终的提交信息'
-                })
+                $.post("/Resign/Create", data.field, function (result) {
+                    if (result.Status == 200) {
+                        layer.msg("添加职务成功", function () {
+                            window.location.href = "/Resign/Index";
+                        })
+                    }
+                });
                 return false;
             });
         });

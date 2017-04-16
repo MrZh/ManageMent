@@ -60,7 +60,9 @@
     <Compile Include="Entity.cs" />
     <Compile Include="ListEntity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DataEntity\Resign.cs" />
     <Compile Include="ViewEntity\ListDepartmentEntity.cs" />
+    <Compile Include="ViewEntity\ListResignEntity.cs" />
     <Compile Include="ViewEntity\ListUserEntity.cs" />
     <Compile Include="ViewEntity\NewsEntity.cs" />
   </ItemGroup>
