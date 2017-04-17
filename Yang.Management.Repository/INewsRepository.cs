@@ -22,5 +22,9 @@ namespace Yang.Management.Repository
         News GetItem(string id);
 
         ListEntity<NewsEntity> GetList(string key, int pageIndex, int pageSize);
+
+        ListEntity<NewsEntity> GetListByType(string type, int pageIndex, int pageSize);
+
+        NewsDetailEntity GetDetail(string id);
     }
 }

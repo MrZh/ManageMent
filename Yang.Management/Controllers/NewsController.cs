@@ -17,6 +17,23 @@ namespace Yang.Management.Controllers
     {
         public INewsRepository iNewsRepository = new NewsRepository();
 
+        
+        public ActionResult GetDetail(string id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        public JsonResult NewsDetail(string id)
+        {
+            return new JsonResult
+            {
+                Data = new Result(this.iNewsRepository.GetDetail(id)),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+            
+        }
+
         [HttpGet]
         // GET: News
         public JsonResult GetIndexNews(string type)
@@ -57,6 +74,17 @@ namespace Yang.Management.Controllers
         public JsonResult GetNews(int pageSize, int pageIndex, string key)
         {
             ListEntity<NewsEntity> listData = this.iNewsRepository.GetList(key, pageIndex, pageSize);
+            return new JsonResult
+            {
+                Data = new Result(listData),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        [HttpGet]
+        public JsonResult GetNewsByType(int pageSize, int pageIndex, string type)
+        {
+            ListEntity<NewsEntity> listData = this.iNewsRepository.GetListByType(type, pageIndex, pageSize);
             return new JsonResult
             {
                 Data = new Result(listData),

@@ -34,9 +34,55 @@
             <div class="site-left">
                 <div class="site-content">
                     <div class="layui-inline">
-                        <label class="layui-form-label">关键字</label>
-                        <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                        <div class="layui-input-inline layui-form">
+                            <label class="layui-form-label">用户</label>
+                            <div class="layui-input-block">
+                                <select name="UserId" id="department-data" lay-filter="aihao">
+                                    <option value="null">-- --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline layui-form">
+                            <label class="layui-form-label">年份</label>
+                            <div class="layui-input-block">
+                                <select name="Year" id="year-data" lay-filter="aihao">
+                                    <option value="null">-- --</option>
+                                    <option value="2018">2018</option>
+                                    <option value="2017">2017</option>
+                                    <option value="2016">2016</option>
+                                    <option value="2015">2015</option>
+                                    <option value="2014">2014</option>
+                                    <option value="2013">2013</option>
+                                    <option value="2012">2012</option>
+                                    <option value="2011">2011</option>
+                                    <option value="2010">2010</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <div class="layui-input-inline layui-form">
+                            <label class="layui-form-label">月份</label>
+                            <div class="layui-input-block">
+                                <select name="Month" id="month-data" lay-filter="aihao">
+                                    <option value="null">-- --</option>
+                                    <option value="1">1月</option>
+                                    <option value="2">2月</option>
+                                    <option value="3">3月</option>
+                                    <option value="4">4月</option>
+                                    <option value="5">5月</option>
+                                    <option value="6">6月</option>
+                                    <option value="7">7月</option>
+                                    <option value="8">8月</option>
+                                    <option value="9">9月</option>
+                                    <option value="10">10月</option>
+                                    <option value="11">11月</option>
+                                    <option value="12">12月</option>
+
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>

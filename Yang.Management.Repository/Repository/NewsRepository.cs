@@ -30,6 +30,12 @@ namespace Yang.Management.Repository.Repository
             return this.context.News.Select(c => new NewsEntity { Title = c.Title, Id = c.Id }).ToList();
         }
 
+        public NewsDetailEntity GetDetail(string id)
+        {
+            BaseQuery query = new BaseQuery("SELECT Id,Title,Contents,Description,CreateTime,CreateUserId,(Select name from UserInfo where Id = nw.CreateUserId) as CreateUserName FROM News as nw where Id=@id", new { id = id });
+            return DapperContext.BaseGetByParam<NewsDetailEntity>(query);
+        }
+
         public News GetItem(string id)
         {
             return this.context.News.Where(c => c.Id.Equals(id)).FirstOrDefault();
@@ -44,7 +50,21 @@ namespace Yang.Management.Repository.Repository
                 return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
             }
 
-            list = this.context.News.Where(c => c.Title.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => new NewsEntity {Id=c.Id,Title=c.Title,Description=c.Description,Type=c.NewsTypeId,CreateTime=c.CreateTime.ToString() }).ToList();
+            list = this.context.News.Where(c => c.Title.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => new NewsEntity {Id=c.Id,Title=c.Title,Description=c.Description,Type=c.NewsTypeId,CreateTime=c.CreateTime.Value.ToString() }).ToList();
+
+            return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
+        }
+
+        public ListEntity<NewsEntity> GetListByType(string type, int pageIndex, int pageSize)
+        {
+            List<NewsEntity> list = new List<NewsEntity>();
+            int total = this.context.News.Where(c => c.NewsTypeId.Contains(type)).Count();
+            if (total <= 0)
+            {
+                return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
+            }
+
+            list = this.context.News.Where(c => c.NewsTypeId.Contains(type)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => new NewsEntity { Id = c.Id, Title = c.Title, Description = c.Description, Type = c.NewsTypeId, CreateTime = c.CreateTime.Value.ToString() }).ToList();
 
             return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
         }

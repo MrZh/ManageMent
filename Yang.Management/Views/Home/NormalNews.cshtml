@@ -1,0 +1,155 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>人事管理系统</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-header">
+        <p class="login-fun">欢迎您<span>1111</span><a class="layui-btn layui-btn-normal">退出</a></p>
+    </div>
+    <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item layui-this"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
+        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+        <li class="layui-nav-item"><a href="">个人信息</a></li>
+        <li class="layui-nav-item"><a href="">密码修改</a></li>
+    </ul>
+    <div class="layui-site-content ">
+        <div class="layui-clear">
+            <div class="site-left">
+                <div class="site-content">
+                    <fieldset class="layui-elem-field">
+                        <legend>新闻消息</legend>
+                        <table class="layui-table">
+                            <colgroup>
+                                <col width="150">
+                                <col width="150">
+                                <col width="200">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>新闻标题</th>
+                                    <th>新闻类别</th>
+                                    <th>发布时间</th>
+                                    <th>简介</th>
+                                </tr>
+                            </thead>
+                            <tbody id="news-data">
+                                <tr>
+                                    <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
+                                    <td>贤心</td>
+                                    <td>汉族</td>
+                                    <td>1989-10-14</td>
+                                    <td>人生似修行</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
+                                    <td>张爱玲</td>
+                                    <td>汉族</td>
+                                    <td>1920-09-30</td>
+                                    <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
+                                    <td>Helen Keller</td>
+                                    <td>拉丁美裔</td>
+                                    <td>1880-06-27</td>
+                                    <td> Life is either a daring adventure or nothing.</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
+                                    <td>岳飞</td>
+                                    <td>汉族</td>
+                                    <td>1103-北宋崇宁二年</td>
+                                    <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
+                                    <td>孟子</td>
+                                    <td>华夏族（汉族）</td>
+                                    <td>公元前-372年</td>
+                                    <td>猿强，则国强。国强，则猿更强！ </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div id="demo1" class="page-box"></div>
+                    </fieldset>
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="~/Content/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/jquery.tmpl.min.js"></script>
+    <script type="text/x-jquery-tmpl" id="news-tmpl">
+        <tr>
+            <td>${Title}</td>
+            <td>新闻消息</td>
+            <td>${CreateTime}</td>
+            <td>${Description}</td>
+        </tr>
+    </script>
+    <script>
+
+    //一般直接写在一个js文件中
+        layui.use(['jquery', 'layer', 'form', 'element', 'laypage'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            form = layui.form(),
+            element = layui.element(),
+            laypage = layui.laypage;
+        var keyword = 0;
+
+        $.get("/News/GetNewsByType", { type: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            laypage({
+                cont: 'demo1'
+                , pages: result.Data.TotalPage //总页数
+                , groups: 5 //
+                , jump: function (result) {
+                    getPage(result);
+                }
+            });
+            render(result.Data.Entity);
+            form.render();
+            return false;
+        });
+
+        var getPage = function (obj) {
+            $.get("/News/GetNewsByType", { type: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                render(result.Data.Entity);
+                // console.log(result.data);
+                form.render();
+                return false;
+            });
+        };
+
+        var render = function (data) {
+            $("#news-data").empty();
+            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+
+        }
+    });
+    </script>
+</body>
+</html>

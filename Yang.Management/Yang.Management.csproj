@@ -273,6 +273,7 @@
     <Content Include="Content\layui\lay\modules\upload.js" />
     <Content Include="Content\layui\lay\modules\util.js" />
     <Content Include="Content\style\admin.css" />
+    <Content Include="Content\style\detail.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -322,6 +323,9 @@
     <Content Include="Views\Department\Edit.cshtml" />
     <Content Include="Views\Resign\Edit.cshtml" />
     <Content Include="Views\News\Edit.cshtml" />
+    <Content Include="Views\Home\News.cshtml" />
+    <Content Include="Views\News\GetDetail.cshtml" />
+    <Content Include="Views\Home\NormalNews.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

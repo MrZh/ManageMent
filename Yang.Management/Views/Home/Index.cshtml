@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>开始使用Layui</title>
+    <title>人事管理系统</title>
     <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
     <link href="~/Content/style/admin.css" rel="stylesheet" />
 </head>
@@ -43,19 +43,19 @@
                                     <li>关于五一的放假通知</li>
                                     <li>关于五一的放假通知</li>
                                 </ol>
-                                <a class="more">更多...</a>
+                                <a class="more" href="/Home/News">更多...</a>
                             </fieldset>
                         </li>
                         <li class="news">
                             <fieldset class="layui-elem-field">
                                 <legend>新闻消息</legend>
-                                <ol class="layui-field-box news-item">
+                                <ol class="layui-field-box news-item" id="normal-news-data">
                                     <li>关于五一的放假通知</li>
                                     <li>关于五一的放假通知</li>
                                     <li>关于五一的放假通知</li>
                                     <li>关于五一的放假通知</li>
                                 </ol>
-                                <a class="more">更多...</a>
+                                <a class="more" href="/Home/NormalNews">更多...</a>
                             </fieldset>
                         </li>
                     </ul>
@@ -82,7 +82,7 @@
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
     <script type="text/x-jquery-tmpl" id="news-tmpl">
-        <li>${name}${id}</li>
+        <li><a href="/News/GetDetail?id=${Id}">${Title}</a></li>
     </script>
     <script>
 
@@ -91,13 +91,32 @@
         var $ = layui.jquery,
             layer = layui.layer,
             form = layui.form(),
-            element = layui.element();
+            element = layui.element(),
+            laypage = layui.laypage;
 
-        $.get("/News/GetIndexNews", { type: "type" }, function (result) {
-            $("#news-tmpl").tmpl(result).appendTo("#news-data");
-            console.log(result);
+        $.get("/News/GetNewsByType", { type: 1, pageIndex: 1, pageSize: 2 }, function (result) {
+            render(result.Data.Entity);
+            form.render();
             return false;
         });
+
+        $.get("/News/GetNewsByType", { type: 0, pageIndex: 1, pageSize: 2 }, function (result) {
+            normalrender(result.Data.Entity);
+            form.render();
+            return false;
+        });
+
+        var render = function (data) {
+            $("#news-data").empty();
+            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+
+        }
+
+        var normalrender = function (data) {
+            $("#normal-news-data").empty();
+            $("#news-tmpl").tmpl(data).appendTo("#normal-news-data");
+
+        }
     });
     </script>
 </body>
