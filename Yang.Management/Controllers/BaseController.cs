@@ -12,9 +12,17 @@ namespace Yang.Management.Controllers
         {
             get
             {
-                return "";
+                return "22110";
             }
             
+        }
+
+        public string ClientIp
+        {
+            get
+            {
+                return HttpContext.Request.UserHostAddress;
+            }
         }
     }
 }

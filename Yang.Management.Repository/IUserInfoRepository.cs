@@ -16,5 +16,7 @@ namespace Yang.Management.Repository
         void Delete(string id);
 
         ListEntity<ListUserEntity> GetListByKey(string key, int pageIndex,int pageSize);
+
+        bool IsExist(string name);
     }
 }

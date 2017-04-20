@@ -30,6 +30,8 @@ namespace Yang.Management.Entity.DataEntity
         [StringLength(255)]
         public string AttendanceMonth { get; set; }
 
+        public string AttendanceDay { get; set; }
+
         public DateTime? LogoutTime { get; set; }
 
         public int? LogoutType { get; set; }

@@ -135,7 +135,7 @@ namespace Yang.Management.Repository
                 .IsUnicode(false);
 
             modelBuilder.Entity<UserInfo>()
-                .Property(e => e.IdentificationCard_)
+                .Property(e => e.IdentificationCard)
                 .IsUnicode(false);
 
             modelBuilder.Entity<UserInfo>()

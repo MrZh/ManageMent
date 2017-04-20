@@ -14,5 +14,9 @@ namespace Yang.Management.Repository
         void Save(AttendanceLog entity);
 
         ListEntity<ListAttendanceLogEntity> GetList(string userId,string year,string month, int pageIndex, int pageSize);
+
+        int IsAttendance(string userId, DateTime date);
+
+        AttendanceLog GetAttendance(string userId, DateTime date);
     }
 }

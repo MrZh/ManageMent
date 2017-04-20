@@ -22,7 +22,7 @@ namespace Yang.Management.Entity.DataEntity
 
         [Column("IdentificationCard ")]
         [StringLength(255)]
-        public string IdentificationCard_ { get; set; }
+        public string IdentificationCard { get; set; }
 
         public DateTime? EntryTime { get; set; }
 
