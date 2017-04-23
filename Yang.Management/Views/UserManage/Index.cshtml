@@ -36,22 +36,22 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">关键字</label>
                         <div class="layui-input-inline">
-                            <input type="text" lay-verify="title" autocomplete="off" placeholder="请输入关键字" class="layui-input">
+                            <input type="text" id="key"  autocomplete="off" placeholder="请输入关键字" class="layui-input">
                         </div>
                     </div>
                 </div>
             </div>
             <div class="site-right">
-                <button class="layui-btn layui-btn-normal">搜索</button>
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
             </div>
         </div>
         <div class="button-box">
-            <button class="layui-btn" id="add">新增人员</button>
-            <button class="layui-btn">修改人员</button>
-            <button class="layui-btn">员工离职</button>
+            <button class="layui-btn" id="addBtn">新增人员</button>
+            <button class="layui-btn" id="modifyBtn">修改人员</button>
+            <button class="layui-btn" id="">员工离职</button>
             <button class="layui-btn">人事变动</button>
             <button class="layui-btn">员工转正</button>
-            <button class="layui-btn layui-btn-danger">删除人员</button>
+            <button class="layui-btn layui-btn-danger" id="delBtn">删除人员</button>
         </div>
         <div class="layui-form">
             <table class="layui-table">
@@ -59,7 +59,8 @@
                     <col width="50">
                     <col width="150">
                     <col width="150">
-                    <col width="200">
+                    <col width="150">
+                    <col width="150">
                     <col>
                 </colgroup>
                 <thead>
@@ -68,45 +69,11 @@
                         <th>姓名</th>
                         <th>职务</th>
                         <th>部门</th>
+                        <th>状态</th>
                         <th>入职时间</th>
                     </tr>
                 </thead>
-                <tbody id="news-data">
-                    <tr>
-                        <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
-                        <td>贤心</td>
-                        <td>汉族</td>
-                        <td>1989-10-14</td>
-                        <td>人生似修行</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
-                        <td>张爱玲</td>
-                        <td>汉族</td>
-                        <td>1920-09-30</td>
-                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
-                        <td>Helen Keller</td>
-                        <td>拉丁美裔</td>
-                        <td>1880-06-27</td>
-                        <td> Life is either a daring adventure or nothing.</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
-                        <td>岳飞</td>
-                        <td>汉族</td>
-                        <td>1103-北宋崇宁二年</td>
-                        <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
-                        <td>孟子</td>
-                        <td>华夏族（汉族）</td>
-                        <td>公元前-372年</td>
-                        <td>猿强，则国强。国强，则猿更强！ </td>
-                    </tr>
+                <tbody id="user-data">
                 </tbody>
             </table>
         </div>
@@ -115,13 +82,14 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-tmpl">
+    <script type="text/x-jquery-tmpl" id="user-tmpl">
         <tr>
             <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
-            <td>${Title}</td>
-            <td>${Type}</td>
+            <td>${Name}</td>
+            <td>${DepartmentName}</td>
+            <td>${ResignName}</td>
+            <td>${Status}</td>
             <td>${CreateTime}</td>
-            <td>${Description}</td>
         </tr>
     </script>
     <script>
@@ -133,8 +101,8 @@
             form = layui.form(),
             element = layui.element(),
             laypage = layui.laypage;
-
-        $.get("/News/GetNewsList", { pageIndex: 1,pageSize:10 }, function (result) {
+        var keyword = "";
+        $.get("/UserManage/GetUserList", {key:keyword, pageIndex: 1,pageSize:2}, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -144,24 +112,42 @@
                     getPage(result);
                 }
             });
-            render(result.data);
+            render(result.Data.Entity);
             form.render();
             return false;
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNewsList", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+            $.get("/UserManage/GetUserList", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-                render(result.data);
-                console.log(result.data);
+                render(result.Data.Entity);
+                console.log(result.Data.Entity);
+                form.render();
+                return false;
+            });
+        }
+
+        var search = function () {
+            keyword = $("#key").val();
+            $.get("/UserManage/GetUserList", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                laypage({
+                    cont: 'demo1'
+                    , pages: result.TotalPage //总页数
+                    , groups: 5 //
+                    , jump: function (result) {
+                        getPage(result);
+                    }
+                });
+                render(result.Data.Entity);
                 form.render();
                 return false;
             });
         }
 
         var render = function (data) {
-            $("#news-data").empty();
-            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+            $("#user-data").empty();
+            $("#user-tmpl").tmpl(data).appendTo("#user-data");
 
         }
 
@@ -185,6 +171,65 @@
                         console.log($(this).val());
                     }
                 })
+            })
+
+            $("#searchBtn").click(function () {
+                search();
+            });
+
+            $("#addBtn").click(function () {
+                window.location.href = "/UserManage/Create";
+            })
+
+            $("#modifyBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能修改一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要修改的职务");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/UserManage/Edit?id=" + id[0];
+            })
+
+            $("#delBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+
+                if (id.length < 1) {
+                    layer.msg("请选中要删除的职员");
+                    return false;
+                }
+
+
+
+                $.get("/UserManage/DeleteUsers", { id: id.join(',') }, function (result) {
+                    if (result.Status == 200) {
+                        window.location.reload(true);
+                    } else {
+                        layer.msg(result.Message);
+                    }
+                    return false;
+                });
+                console.log(id);
             })
         })
     });

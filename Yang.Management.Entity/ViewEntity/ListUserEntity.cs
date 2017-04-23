@@ -16,5 +16,6 @@ namespace Yang.Management.Entity.ViewEntity
 
         public string CreateTime { get; set; }
 
+        public string Status { get; set; }
     }
 }

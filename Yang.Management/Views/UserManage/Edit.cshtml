@@ -29,38 +29,39 @@
         <li class="layui-nav-item"><a href="">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新增人员</h1>
+        <h1 class="layui-colla-title title-from">编辑人员</h1>
         <form class="layui-form form-them" action="">
+            <input type="hidden" name="Id" value="@ViewBag.Id" />
             <div class="layui-form-item">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Name" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input">
+                    <input type="text" name="Name" id="Name" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">登录名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="LoginName" lay-verify="title|loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+                    <input type="text" name="LoginName" readonly id="LoginName" lay-verify="title|loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">身份证</label>
                 <div class="layui-input-block">
-                    <input type="text" name="IdentificationCard" lay-verify="identity" autocomplete="off" placeholder="请输入身份证" class="layui-input">
+                    <input type="text" name="IdentificationCard" id="IdentificationCard" lay-verify="identity" autocomplete="off" placeholder="请输入身份证" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">出生日期</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Birthday" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                    <input type="text" name="Birthday" id="Birthday" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">入职时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="EntryTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                    <input type="text" name="EntryTime" id="EntryTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -74,7 +75,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <select name="Sex" lay-filter="aihao">
+                    <select name="Sex" id="Sex" lay-filter="aihao">
                         <option value="0">女</option>
                         <option value="1" selected="selected">男</option>
                     </select>
@@ -83,7 +84,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">结婚状况</label>
                 <div class="layui-input-block">
-                    <select name="IsMarried" lay-filter="aihao">
+                    <select name="IsMarried" id="IsMarried" lay-filter="aihao">
                         <option value="0">未婚</option>
                         <option value="1" selected="selected">已婚</option>
                     </select>
@@ -100,25 +101,25 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">家庭住址</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Address" lay-verify="title" autocomplete="off" placeholder="请输入家庭地址" class="layui-input">
+                    <input type="text" name="Address" id="Address" lay-verify="title" autocomplete="off" placeholder="请输入家庭地址" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">籍贯</label>
                 <div class="layui-input-block">
-                    <input type="text" name="NativePlace" lay-verify="title" autocomplete="off" placeholder="请输入籍贯" class="layui-input">
+                    <input type="text" name="NativePlace" id="NativePlace" lay-verify="title" autocomplete="off" placeholder="请输入籍贯" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">联系方式</label>
                 <div class="layui-input-block">
-                    <input type="tel" name="MobilePhone" lay-verify="phone" autocomplete="off" class="layui-input" placeholder="请输入联系方式">
+                    <input type="tel" name="MobilePhone" id="MobilePhone" lay-verify="phone" autocomplete="off" class="layui-input" placeholder="请输入联系方式">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">电子邮箱</label>
                 <div class="layui-input-block">
-                    <input type="tel" name="Email" lay-verify="email" autocomplete="off" class="layui-input" placeholder="请输入电子邮件">
+                    <input type="tel" name="Email" lay-verify="email" id="Email" autocomplete="off" class="layui-input" placeholder="请输入电子邮件">
                 </div>
             </div>
             <div class="layui-form-item">
@@ -159,33 +160,40 @@
                 return false;
             });
 
+            $.get("/UserManage/GetUserById", { id: "@ViewBag.Id" }, function (result) {
+                //$("#department-tmpl").tmpl(result.Data).appendTo("#resign-data");
+                if (result.Data != null) {
+                    $("#Name").val(result.Data.Name);
+                    $("#LoginName").val(result.Data.LoginName);
+                    $("#IdentificationCard").val(result.Data.IdentificationCard);
+                    $("#Birthday").val(result.Data.Birthday);
+                    $("#EntryTime").val(result.Data.EntryTime);
+                    $("#department-data").val(result.Data.DepartmentId);
+                    $("#Sex").val(result.Data.Sex);
+                    $("#IsMarried").val(result.Data.IsMarried);
+                    $("#resign-data").val(result.Data.Resign);
+                    $("#Address").val(result.Data.Address);
+                    $("#NativePlace").val(result.Data.NativePlace);
+                    $("#MobilePhone").val(result.Data.MobilePhone);
+                    $("#Email").val(result.Data.Email);
+
+                }
+                form.render();
+                console.log(result);
+                return false;
+            });
+
             form.verify({
                 title: function (value) {
                     if (value.length < 3) {
                         return '至少得3个字符啊';
-                    }
-                },
-                loginName: function (value) {
-                    var temp = 510;
-                    $.ajax({
-                        type: "get",
-                        url: "/UserManage/IsExist",
-                        data: {name:value},
-                        async: false,
-                        success: function (result) {
-                            temp = result.Status;
-                        }
-                    })
-
-                    if (temp == 511) {
-                        return "用户名已存在"
                     }
                 }
 
             });
             //监听提交
             form.on('submit(demo1)', function (data) {
-                $.post("/UserManage/Create", data.field, function (result) {
+                $.post("/UserManage/Edit", data.field, function (result) {
                     if (result.Status == 200) {
                         layer.msg("添加人员成功", function () {
                             window.location.href = "/UserManage/Index";

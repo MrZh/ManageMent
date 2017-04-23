@@ -326,6 +326,8 @@
     <Content Include="Views\Home\News.cshtml" />
     <Content Include="Views\News\GetDetail.cshtml" />
     <Content Include="Views\Home\NormalNews.cshtml" />
+    <Content Include="Views\UserManage\Edit.cshtml" />
+    <Content Include="Views\UserManage\Dismiss.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

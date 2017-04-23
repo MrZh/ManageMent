@@ -28,7 +28,6 @@ namespace Yang.Management.Controllers
             return View();
         }
 
-
         [HttpPost]
         public ActionResult Create(UserInfo entity)
         {
@@ -42,6 +41,29 @@ namespace Yang.Management.Controllers
                 Data = new Result(null),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
+        }
+
+        public ActionResult Edit(string id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Edit(UserInfo entity)
+        {
+            iUserInfoRepository.Save(entity);
+            return new JsonResult
+            {
+                Data = new Result(null),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public ActionResult Dismiss(String id)
+        {
+            ViewBag.Id = id;
+            return View();
         }
 
         public ActionResult IsExist(string name)
@@ -59,9 +81,67 @@ namespace Yang.Management.Controllers
             };
         }
 
-        public JsonResult getUserList()
+        public JsonResult GetUserById(string id)
         {
-            ListEntity<ListUserEntity> list = this.iUserInfoRepository.GetListByKey("1", 1, 3);
+            var user = iUserInfoRepository.GetUserById(id);
+            if (user == null)
+            {
+                return new JsonResult
+                {
+                    Data = new Result(null),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+            return new JsonResult
+            {
+                Data = new Result(
+               new
+               {
+                   Id = user.Id,
+                   Name = user.Name,
+                   LoginName = user.LoginName,
+                   Birthday = user.Birthday.Value.ToString("yyyy-MM-dd"),
+                   IdentificationCard = user.IdentificationCard,
+                   EntryTime = user.EntryTime.Value.ToString("yyyy-MM-dd"),
+                   Address = user.Address,
+                   NativePlace = user.NativePlace,
+                   Resign = user.Resign,
+                   DepartmentId = user.DepartmentId,
+                   Sex = user.Sex,
+                   IsMarried = user.IsMarried,
+                   MobilePhone = user.MobilePhone,
+                   Email = user.Email
+               }
+
+                ),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult DeleteUsers(string id)
+        {
+            string[] ids = id.Split(',');
+            int result = 1;
+            this.iUserInfoRepository.DeleteUsers(ids);
+            if (result == 1)
+            {
+                return new JsonResult
+                {
+                    Data = new Result(null),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
+            return new JsonResult
+            {
+                Data = new Result(511, null, "该职务下有人"),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult GetUserList(string key, int pageSize,int pageIndex)
+        {
+            ListEntity<ListUserEntity> list = this.iUserInfoRepository.GetListByKey(key, pageIndex, pageSize);
 
             return new JsonResult
             {
