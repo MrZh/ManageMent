@@ -20,5 +20,8 @@ namespace Yang.Management.Entity.DataEntity
 
         [StringLength(255)]
         public string PassWord { get; set; }
+
+        [StringLength(255)]
+        public string UserId { get; set; }
     }
 }

@@ -22,6 +22,9 @@ namespace Yang.Management.Entity.DataEntity
 
         public decimal? SalaryModify { get; set; }
 
+
+        public decimal? OriginalSalary { get; set; }
+
         [StringLength(500)]
         public string Content { get; set; }
     }

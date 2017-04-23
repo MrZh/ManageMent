@@ -20,6 +20,10 @@ namespace Yang.Management.Entity.DataEntity
 
         public DateTime? CreateTime { get; set; }
 
+        public DateTime? DimissionTime { get; set; }
+
+        public DateTime? ApplyTime { get; set; }
+
         [StringLength(50)]
         public string CreateUserId { get; set; }
 

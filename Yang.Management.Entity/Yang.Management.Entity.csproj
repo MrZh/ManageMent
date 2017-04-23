@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonEncrypt.cs" />
     <Compile Include="DataEntity\AttendanceLog.cs" />
     <Compile Include="DataEntity\Department.cs" />
     <Compile Include="DataEntity\DimissionRecord.cs" />
@@ -63,8 +64,10 @@
     <Compile Include="DataEntity\Resign.cs" />
     <Compile Include="ViewEntity\ListAttendanceLogEntity.cs" />
     <Compile Include="ViewEntity\ListDepartmentEntity.cs" />
+    <Compile Include="ViewEntity\ListDimissionRecordEntity.cs" />
     <Compile Include="ViewEntity\ListResignEntity.cs" />
     <Compile Include="ViewEntity\ListUserEntity.cs" />
+    <Compile Include="ViewEntity\ListUserModifyLogEntity.cs" />
     <Compile Include="ViewEntity\NewsDetailEntity.cs" />
     <Compile Include="ViewEntity\NewsEntity.cs" />
   </ItemGroup>
