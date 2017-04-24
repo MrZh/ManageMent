@@ -26,6 +26,7 @@ namespace Yang.Management.Entity
         /// <returns>密码</returns>
         public static string Encrypt(string toEncrypt)
         {
+
             var key = pkey;
             var iv = piv;
             var keyArray = Encoding.UTF8.GetBytes(key);
@@ -42,6 +43,7 @@ namespace Yang.Management.Entity
                 Mode = CipherMode.CBC
             };
 
+
             var cTransform = rDel.CreateEncryptor();
             var resultArray = cTransform.TransformFinalBlock(toEncryptArray, 0, toEncryptArray.Length);
             return Convert.ToBase64String(resultArray, 0, resultArray.Length);
@@ -56,6 +58,7 @@ namespace Yang.Management.Entity
         /// <returns>密码</returns>
         public static string Encrypt(string toEncrypt, string key, string iv)
         {
+
             var keyArray = Encoding.UTF8.GetBytes(key);
             var ivArray = Encoding.UTF8.GetBytes(iv);
             var toEncryptArray = Encoding.UTF8.GetBytes(toEncrypt);
@@ -82,6 +85,7 @@ namespace Yang.Management.Entity
         /// <returns>源字符串</returns>
         public static string Decrypt(string toDecrypt)
         {
+
             var key = pkey;
             var iv = piv;
             var keyArray = Encoding.UTF8.GetBytes(key);
@@ -112,6 +116,7 @@ namespace Yang.Management.Entity
         /// <returns>源字符串</returns>
         public static string Decrypt(string toDecrypt, string key, string iv)
         {
+
             var keyArray = Encoding.UTF8.GetBytes(key);
             var ivArray = Encoding.UTF8.GetBytes(iv);
             var toEncryptArray = Convert.FromBase64String(toDecrypt);
