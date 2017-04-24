@@ -30,6 +30,11 @@ namespace Yang.Management.Repository.Repository
             return false;
         }
 
+        public List<ListUserEntity> GetAllList()
+        {
+            return this.context.UserInfo.Select(c => new ListUserEntity { Id = c.Id, Name = c.Name }).ToList();
+        }
+
         public ListEntity<ListUserEntity> GetListByKey(string key, int pageIndex, int pageSize)
         {
             int total = this.context.UserInfo.Where(c => c.Name.Contains(key)&&c.Status!=-1).Count();
@@ -81,6 +86,13 @@ namespace Yang.Management.Repository.Repository
                 dbclass = new UserInfo();
                 dbclass.Id = entity.Id;
                 this.context.UserInfo.Add(dbclass);
+                UserLogin userlogin = new UserLogin();
+                userlogin.Id = Guid.NewGuid().ToString();
+                userlogin.Name = entity.Name;
+                userlogin.RealName = entity.Name;                
+                userlogin.PassWord = CommonEncrypt.Encrypt(entity.Password);
+                entity.Password = CommonEncrypt.Encrypt(entity.Password);
+                this.context.UserLogin.Add(userlogin);
 
             }
 

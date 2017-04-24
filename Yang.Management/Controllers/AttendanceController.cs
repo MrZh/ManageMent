@@ -20,7 +20,22 @@ namespace Yang.Management.Controllers
 
         public JsonResult GetListByUserId(string userId, string year, string month, int pageIndex, int pageSize)
         {
-            var result = this.iAttendanceLogRepository.GetList(this.CurrentUserId, year, month, pageIndex, pageSize);
+            if (userId == "null")
+            {
+                userId = "";
+            }
+
+            if (month == "null")
+            {
+                month = "";
+            }
+
+            if (year == "null")
+            {
+                year = "";
+            }
+
+            var result = this.iAttendanceLogRepository.GetList(userId, year, month, pageIndex, pageSize);
             return new JsonResult
             {
                 Data = new Result(result),

@@ -38,7 +38,7 @@
                             <label class="layui-form-label">年份</label>
                             <div class="layui-input-block">
                                 <select name="Year" id="year-data" lay-filter="aihao">
-                                    <option value="null">-- --</option>
+                                    <option value="null" selected="selected">-- --</option>
                                     <option value="2018">2018</option>
                                     <option value="2017">2017</option>
                                     <option value="2016">2016</option>
@@ -57,7 +57,7 @@
                             <label class="layui-form-label">月份</label>
                             <div class="layui-input-block">
                                 <select name="Month" id="month-data" lay-filter="aihao">
-                                    <option value="null">-- --</option>
+                                    <option value="null" selected="selected">-- --</option>
                                     <option value="1">1月</option>
                                     <option value="2">2月</option>
                                     <option value="3">3月</option>
@@ -78,7 +78,7 @@
                 </div>
             </div>
             <div class="site-right">
-                <button class="layui-btn layui-btn-normal">搜索</button>
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
             </div>
         </div>
         <div class="button-box">
@@ -96,6 +96,8 @@
                     <col width="150">
                     <col width="150">
                     <col width="200">
+                    <col width="150">
+                    <col width="200">
                     <col>
                 </colgroup>
                 <thead>
@@ -104,11 +106,12 @@
                         <th>姓名</th>
                         <th>年份/月份</th>
                         <th>是否迟到</th>
-                        <th>考勤时间</th>
+                        <th>签到时间</th>
+                        <th>是否早退</th>
+                        <th>签退时间</th>
                     </tr>
                 </thead>
-                <tbody id="news-data">
-                </tbody>
+                <tbody id="attendance-data"></tbody>
             </table>
         </div>
         <div id="demo1" class="page-box"></div>
@@ -116,13 +119,15 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-tmpl">
+    <script type="text/x-jquery-tmpl" id="attendance-tmpl">
         <tr>
-            <td><input type="checkbox" name="" value="${Name}" lay-skin="primary"></td>
-            <td>${Name}</td>
-            <td>汉族</td>
-            <td>1989-10-14</td>
-            <td>人生似修行</td>
+            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
+            <td>${UserName}</td>
+            <td>${AttendanceMonth}/${AttendanceYear}</td>
+            <td>{{if AttendanceType=="0"}} 迟到 {{/if}}{{if AttendanceType=="1"}}正常 {{/if}}</td>
+            <td>${AttendanceTime}</td>
+            <td>{{if LogoutType=="0"}} 早退 {{/if}}{{if LogoutType=="1"}}正常 {{/if}}</td>
+            <td>${LogoutTime}</td>
         </tr>
     </script>
     <script>
@@ -134,43 +139,64 @@
                 form = layui.form(),
                 element = layui.element(),
                 laypage = layui.laypage;
+            var year = "";
+            var month = "";
 
-            $.get("/News/GetNewsList", { pageIndex: 1, pageSize: 10 }, function (result) {
+            $.get("/MyAttendance/GetMyAttendanceList", { year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'
-                    , pages: result.TotalPage //总页数
+                    , pages: result.Data.TotalPage //总页数
                     , groups: 5 //
                     , jump: function (result) {
                         getPage(result);
                     }
                 });
-                render(result.data);
                 form.render();
                 return false;
             });
 
             var getPage = function (obj) {
-                $.get("/News/GetNewsList", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+                $.get("/MyAttendance/GetMyAttendanceList", { year: year, month: month, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                     //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-                    render(result.data);
-                    console.log(result.data);
+                    render(result.Data.Entity);
+                    console.log(result.Data);
                     form.render();
                     return false;
                 });
             }
 
             var render = function (data) {
-                $("#news-data").empty();
-                $("#news-tmpl").tmpl(data).appendTo("#news-data");
+                $("#attendance-data").empty();
+                $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
 
             }
 
-            laypage({
-                cont: 'demo1'
-                , pages: 100 //总页数
-                , groups: 5 //连续显示分页数
-            });
+            var search = function () {
+                keyword = $("#key").val();
+
+                if ($("#year-data").val() == "null" && $("#month-data").val() != "null") {
+                    layer.msg('请选择年份');
+                    return false;
+                }
+                month = $("#month-data").val();
+                year = $("#year-data").val();
+                $.get("/MyAttendance/GetMyAttendanceList", { year: year, month: month, key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+                    //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                    laypage({
+                        cont: 'demo1'
+                        , pages: result.Data.TotalPage //总页数
+                        , groups: 5 //
+                        , jump: function (result) {
+                            getPage(result);
+                        }
+                    });
+                    render(result.Data.Entity);
+                    form.render();
+                    return false;
+                });
+            }
+
             //全选
             form.on('checkbox(allChoose)', function (data) {
                 var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
@@ -186,7 +212,10 @@
                             console.log($(this).val());
                         }
                     })
-                })
+                });
+                $("#searchBtn").click(function () {
+                    search();
+                });
             })
         });
     </script>

@@ -16,10 +16,31 @@ namespace Yang.Management.Controllers
     public class MyAttendanceController : BaseController
     {
         IAttendanceLogRepository iAttendanceLogRepository = new AttendanceLogRepository();
+        IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
         // GET: MyAttendance
         public ActionResult Index()
         {
             return View();
+        }
+
+        public JsonResult GetCurrentUserInfo()
+        {
+            var user = iUserInfoRepository.GetUserById(this.CurrentUserId);
+            if (user == null)
+            {
+                return new JsonResult
+                {
+                    Data = new Result(125, null, null),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
+            return new JsonResult
+            {
+                Data = new Result(new { UserName = user.Name }),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                
+            };
         }
 
         /// <summary>
@@ -42,6 +63,15 @@ namespace Yang.Management.Controllers
 
         public JsonResult GetMyAttendanceList(string year, string month, int pageIndex, int pageSize)
         {
+            if (year == "null")
+            {
+                year = null;
+            }
+            if (month == "null")
+            {
+                month = null;
+            }
+
             var result = this.iAttendanceLogRepository.GetList(this.CurrentUserId, year, month, pageIndex, pageSize);
             return new JsonResult
             {

@@ -12,7 +12,10 @@ namespace Yang.Management.Controllers
         {
             get
             {
-                return "22110";
+                if (HttpContext.Session["CurrentUserId"] == null) {
+                    return "22110";
+                }
+                return HttpContext.Session["CurrentUserId"].ToString();
             }
             
         }

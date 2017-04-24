@@ -50,7 +50,7 @@ namespace Yang.Management.Repository.Repository
                 return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
             }
 
-            list = this.context.News.Where(c => c.Title.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => new NewsEntity {Id=c.Id,Title=c.Title,Description=c.Description,Type=c.NewsTypeId,CreateTime=c.CreateTime.Value.ToString() }).ToList();
+            list = this.context.News.Where(c => c.Title.Contains(key)).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).ToList().Select(c => new NewsEntity {Id=c.Id,Title=c.Title,Description=c.Description,Type=c.NewsTypeId,CreateTime=c.CreateTime.Value.ToString() }).ToList();
 
             return new ListEntity<NewsEntity>(list, total, pageIndex, pageSize);
         }

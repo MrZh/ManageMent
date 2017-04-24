@@ -66,6 +66,7 @@
     <Compile Include="ViewEntity\ListDepartmentEntity.cs" />
     <Compile Include="ViewEntity\ListDimissionRecordEntity.cs" />
     <Compile Include="ViewEntity\ListResignEntity.cs" />
+    <Compile Include="ViewEntity\ListSalaryModifyLogEntity.cs" />
     <Compile Include="ViewEntity\ListUserEntity.cs" />
     <Compile Include="ViewEntity\ListUserModifyLogEntity.cs" />
     <Compile Include="ViewEntity\NewsDetailEntity.cs" />

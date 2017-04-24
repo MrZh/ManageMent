@@ -37,7 +37,7 @@
                         <div class="layui-input-inline layui-form">
                             <label class="layui-form-label">用户</label>
                             <div class="layui-input-block">
-                                <select name="UserId" id="department-data" lay-filter="aihao">
+                                <select name="UserId" id="user-data" lay-filter="aihao">
                                     <option value="null">-- --</option>
                                 </select>
                             </div>
@@ -88,7 +88,7 @@
                 </div>
             </div>
             <div class="site-right">
-                <button class="layui-btn layui-btn-normal">搜索</button>
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
             </div>
         </div>
         <div class="button-box">
@@ -106,6 +106,8 @@
                     <col width="150">
                     <col width="150">
                     <col width="200">
+                    <col width="150">
+                    <col width="200">
                     <col>
                 </colgroup>
                 <thead>
@@ -114,45 +116,13 @@
                         <th>姓名</th>
                         <th>年份/月份</th>
                         <th>是否迟到</th>
-                        <th>考勤时间</th>
+                        <th>签到时间</th>
+                        <th>是否早退</th>
+                        <th>签退时间</th>
                     </tr>
                 </thead>
-                <tbody id="news-data">
-                    <tr>
-                        <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
-                        <td>贤心</td>
-                        <td>汉族</td>
-                        <td>1989-10-14</td>
-                        <td>人生似修行</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
-                        <td>张爱玲</td>
-                        <td>汉族</td>
-                        <td>1920-09-30</td>
-                        <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
-                        <td>Helen Keller</td>
-                        <td>拉丁美裔</td>
-                        <td>1880-06-27</td>
-                        <td> Life is either a daring adventure or nothing.</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
-                        <td>岳飞</td>
-                        <td>汉族</td>
-                        <td>1103-北宋崇宁二年</td>
-                        <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
-                    </tr>
-                    <tr>
-                        <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
-                        <td>孟子</td>
-                        <td>华夏族（汉族）</td>
-                        <td>公元前-372年</td>
-                        <td>猿强，则国强。国强，则猿更强！ </td>
-                    </tr>
+                <tbody id="attendance-data">
+                    
                 </tbody>
             </table>
         </div>
@@ -161,14 +131,19 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-tmpl">
+    <script type="text/x-jquery-tmpl" id="attendance-tmpl">
         <tr>
-            <td><input type="checkbox" name="" value="${Name}" lay-skin="primary"></td>
-            <td>${Name}</td>
-            <td>汉族</td>
-            <td>1989-10-14</td>
-            <td>人生似修行</td>
+            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
+            <td>${UserName}</td>
+            <td>${AttendanceMonth}/${AttendanceYear}</td>
+            <td>{{if AttendanceType=="0"}} 迟到 {{/if}}{{if AttendanceType=="1"}}正常 {{/if}}</td>
+            <td>${AttendanceTime}</td>
+            <td>{{if LogoutType=="0"}} 早退 {{/if}}{{if LogoutType=="1"}}正常 {{/if}}</td>
+            <td>${LogoutTime}</td>
         </tr>
+    </script>
+    <script type="text/x-jquery-tmpl" id="user-tmpl">
+        <option value="${Id}">${Name}</option>
     </script>
     <script>
 
@@ -180,42 +155,72 @@
             element = layui.element(),
             laypage = layui.laypage;
 
-        $.get("/News/GetNewsList", { pageIndex: 1,pageSize:10 }, function (result) {
+        var year = "";
+        var month = "";
+        var userId = "";
+
+        $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
-                ,pages: result.TotalPage //总页数
+                , pages: result.Data.TotalPage //总页数
                 , groups: 5 //
                 , jump: function (result) {
                     getPage(result);
                 }
             });
-            render(result.data);
+            form.render();
+            return false;
+        });
+
+        $.get("/UserManage/GetAllUserList", function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            $("#user-tmpl").tmpl(result.Data).appendTo("#user-data");
             form.render();
             return false;
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNewsList", { pageIndex: obj.curr, pageSize: 10 }, function (result) {
+            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-                render(result.data);
-                console.log(result.data);
+                render(result.Data.Entity);
+                console.log(result.Data);
                 form.render();
                 return false;
             });
         }
 
         var render = function (data) {
-            $("#news-data").empty();
-            $("#news-tmpl").tmpl(data).appendTo("#news-data");
+            $("#attendance-data").empty();
+            $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
 
         }
 
-        laypage({
-            cont: 'demo1'
-            ,pages: 100 //总页数
-            ,groups: 5 //连续显示分页数
-        });
+        var search = function () {
+           
+
+            if ($("#year-data").val() == "null" && $("#month-data").val() != "null") {
+                layer.msg('请选择年份');
+                return false;
+            }
+            userId = $("#user-data").val();
+            month = $("#month-data").val();
+            year = $("#year-data").val();
+            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                laypage({
+                    cont: 'demo1'
+                    , pages: result.Data.TotalPage //总页数
+                    , groups: 5 //
+                    , jump: function (result) {
+                        getPage(result);
+                    }
+                });
+                render(result.Data.Entity);
+                form.render();
+                return false;
+            });
+        }
          //全选
         form.on('checkbox(allChoose)', function(data){
             var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
@@ -225,13 +230,17 @@
             form.render('checkbox');
         });
         $(function(){
-            $('#add').click(function(){
-                $("input[type='checkbox']").each(function(){
-                    if($(this).is(":checked")){
+            $('#add').click(function () {
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
                         console.log($(this).val());
                     }
                 })
-            })
+            });
+            $("#searchBtn").click(function () {
+                search();
+            });
+
         })
     });
     </script>

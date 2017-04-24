@@ -41,8 +41,8 @@
                 element = layui.element();
             form.verify({
                 title: function (value) {
-                    if (value.length < 5) {
-                        return '标题至少得5个字符啊';
+                    if (value.length < 3) {
+                        return '用户名至少得3个字符';
                     }
                 }
                 , pass: [/(.+){6,12}$/, '密码必须6到12位']
@@ -50,6 +50,9 @@
             form.on('submit(demo1)', function (data) {
                 console.log(data);
                 $.post("/Login/Login", data.field, function (result) {
+                    if (result.Status == 200) {
+                        location.href="/Home/Index"
+                    }
                     console.log(result);
                     return false; 
                 });

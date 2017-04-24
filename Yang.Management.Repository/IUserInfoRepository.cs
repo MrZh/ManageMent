@@ -22,5 +22,7 @@ namespace Yang.Management.Repository
         bool IsExist(string name);
 
         UserInfo GetUserById(string id);
+
+        List<ListUserEntity> GetAllList();
     }
 }

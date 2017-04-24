@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="layui-header">
-        <p class="login-fun">欢迎您<span>1111</span><a class="layui-btn layui-btn-normal">退出</a></p>
+        <p class="login-fun">欢迎您<span id="userinfo" style="margin-left:10px"></span><a class="layui-btn layui-btn-normal logout">退出</a></p>
     </div>
     <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
@@ -37,11 +37,6 @@
                             <fieldset class="layui-elem-field">
                                 <legend>公告通知</legend>
                                 <ol class="layui-field-box news-item" id="news-data">
-                                    
-                                    <li><a href="#">关于五一的放假通知</a></li>
-                                    <li>关于五一的放假通知</li>
-                                    <li>关于五一的放假通知</li>
-                                    <li>关于五一的放假通知</li>
                                 </ol>
                                 <a class="more" href="/Home/News">更多...</a>
                             </fieldset>
@@ -49,11 +44,7 @@
                         <li class="news">
                             <fieldset class="layui-elem-field">
                                 <legend>新闻消息</legend>
-                                <ol class="layui-field-box news-item" id="normal-news-data">
-                                    <li>关于五一的放假通知</li>
-                                    <li>关于五一的放假通知</li>
-                                    <li>关于五一的放假通知</li>
-                                    <li>关于五一的放假通知</li>
+                                <ol class="layui-field-box news-item" id="normal-news-data">                                  
                                 </ol>
                                 <a class="more" href="/Home/NormalNews">更多...</a>
                             </fieldset>
@@ -67,13 +58,10 @@
                 </div>
                 <fieldset class="layui-elem-field">
                     <legend>近期签到记录</legend>
-                    <ol class="layui-field-box news-item">
-                        <li>2016年11月11日签到</li>
-                        <li>2016年11月11日签到</li>
-                        <li>2016年11月11日签到</li>
-                        <li>2016年11月11日签到</li>
+                    <ol class="layui-field-box news-item" id="attendance-data">
+
                     </ol>
-                    <a class="more">更多</a>
+                    <a class="more" href="/MyAttendance/Index">更多</a>
                 </fieldset>
             </div>
         </div>
@@ -84,6 +72,9 @@
     <script type="text/x-jquery-tmpl" id="news-tmpl">
         <li><a href="/News/GetDetail?id=${Id}">${Title}</a></li>
     </script>
+    <script type="text/x-jquery-tmpl" id="attendance-tmpl">
+        <li>${AttendanceTime}  {{if AttendanceType=="0"}} 迟到 {{/if}}{{if AttendanceType=="1"}}正常 {{/if}}</li>
+    </script>
     <script>
 
     //一般直接写在一个js文件中
@@ -93,9 +84,28 @@
             form = layui.form(),
             element = layui.element(),
             laypage = layui.laypage;
+        $(".logout").on("click", function () {
+            location.href = "/Login/Logout"
+        });
+
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
+
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
 
         $.get("/News/GetNewsByType", { type: 1, pageIndex: 1, pageSize: 2 }, function (result) {
             render(result.Data.Entity);
+            form.render();
+            return false;
+        });
+
+        $.get("/MyAttendance/GetMyAttendanceList", { year: "", month: "", pageIndex: 1, pageSize: 2 }, function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            $("#attendance-tmpl").tmpl(result.Data.Entity).appendTo("#attendance-data");
             form.render();
             return false;
         });

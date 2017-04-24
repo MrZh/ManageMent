@@ -12,7 +12,7 @@ using Yang.Management.Repository.Repository;
 
 namespace Yang.Management.Controllers
 {
-    public class UserManageController : Controller
+    public class UserManageController : BaseController
     {
 
         public IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
@@ -61,6 +61,24 @@ namespace Yang.Management.Controllers
         }
 
         public ActionResult Dismiss(String id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        public ActionResult ChangePassword()
+        {
+            ViewBag.Id = CurrentUserId;
+            return View();
+        }
+
+        public ActionResult UserModify(String id)
+        {
+            ViewBag.Id = id;
+            return View();
+        }
+
+        public ActionResult UserSalaryModify(string id)
         {
             ViewBag.Id = id;
             return View();
@@ -142,6 +160,17 @@ namespace Yang.Management.Controllers
         public JsonResult GetUserList(string key, int pageSize,int pageIndex)
         {
             ListEntity<ListUserEntity> list = this.iUserInfoRepository.GetListByKey(key, pageIndex, pageSize);
+
+            return new JsonResult
+            {
+                Data = new Result(list),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        public JsonResult GetAllUserList()
+        {
+            List<ListUserEntity> list = this.iUserInfoRepository.GetAllList();
 
             return new JsonResult
             {
