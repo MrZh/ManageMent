@@ -158,6 +158,7 @@
     <Compile Include="Controllers\NewsController.cs" />
     <Compile Include="Controllers\ResignController.cs" />
     <Compile Include="Controllers\UploadController.cs" />
+    <Compile Include="Controllers\UserInfoController.cs" />
     <Compile Include="Controllers\UserManageController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -331,6 +332,8 @@
     <Content Include="Views\UserManage\UserModify.cshtml" />
     <Content Include="Views\UserManage\UserSalaryModify.cshtml" />
     <Content Include="Views\UserManage\ChangePassword.cshtml" />
+    <Content Include="Views\UserInfo\ChangePassword.cshtml" />
+    <Content Include="Views\UserInfo\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

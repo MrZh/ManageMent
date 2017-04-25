@@ -1,0 +1,208 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>人员管理系统</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-header">
+        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+    </div>
+    <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
+        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item layui-this"><a href="/UserManage/Index">人员管理</a></li>
+        <li class="layui-nav-item"><a href="">个人信息</a></li>
+        <li class="layui-nav-item"><a href="">密码修改</a></li>
+    </ul>
+    <div class="layui-site-content ">
+        <h1 class="layui-colla-title title-from">编辑人员</h1>
+        <form class="layui-form form-them" action="">
+            <input type="hidden" name="Id" value="@ViewBag.Id" />
+            <div class="layui-form-item">
+                <label class="layui-form-label">姓名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Name" id="Name" readonly="readonly" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">登录名</label>
+                <div class="layui-input-block">
+                    <input type="text" name="LoginName" readonly="readonly" id="LoginName" lay-verify="title|loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">身份证</label>
+                <div class="layui-input-block">
+                    <input type="text" name="IdentificationCard" readonly="readonly" id="IdentificationCard" lay-verify="identity" autocomplete="off" placeholder="请输入身份证" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">出生日期</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Birthday" id="Birthday" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">入职时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="EntryTime" id="EntryTime" readonly="readonly" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">入职部门</label>
+                <div class="layui-input-block">
+                    <select name="DepartmentId" id="department-data" readonly="readonly" lay-filter="aihao">
+                        <option value="null">-- --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">性别</label>
+                <div class="layui-input-block">
+                    <select name="Sex" id="Sex" readonly="readonly" lay-filter="aihao">
+                        <option value="0">女</option>
+                        <option value="1" selected="selected">男</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">结婚状况</label>
+                <div class="layui-input-block">
+                    <select name="IsMarried" id="IsMarried" lay-filter="aihao">
+                        <option value="0">未婚</option>
+                        <option value="1" selected="selected">已婚</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">职务</label>
+                <div class="layui-input-block">
+                    <select name="Resign" readonly="readonly" lay-filter="aihao" id="resign-data">
+                        <option value="0">-- --</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">家庭住址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="Address" id="Address" lay-verify="title" autocomplete="off" placeholder="请输入家庭地址" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">籍贯</label>
+                <div class="layui-input-block">
+                    <input type="text" name="NativePlace" id="NativePlace" lay-verify="title" autocomplete="off" placeholder="请输入籍贯" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">联系方式</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="MobilePhone" id="MobilePhone" lay-verify="phone" autocomplete="off" class="layui-input" placeholder="请输入联系方式">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">电子邮箱</label>
+                <div class="layui-input-block">
+                    <input type="tel" name="Email" lay-verify="email" id="Email" autocomplete="off" class="layui-input" placeholder="请输入电子邮件">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="~/Content/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/jquery.tmpl.min.js"></script>
+    <script type="text/x-jquery-tmpl" id="department-tmpl">
+        <option value="${Id}">${Name}</option>
+    </script>
+    <script>
+
+        //一般直接写在一个js文件中
+        layui.use(['jquery', 'layer', 'form', 'element', 'laypage', 'laydate'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                form = layui.form(),
+                element = layui.element(),
+                laypage = layui.laypage,
+                laydate = layui.laydate;
+            $.get("/Department/GetAllDepartment", { type: "type" }, function (result) {
+                $("#department-tmpl").tmpl(result.Data).appendTo("#department-data");
+                form.render();
+                console.log(result);
+                return false;
+            });
+
+            $.get("/Resign/GetAllResign", { type: "type" }, function (result) {
+                $("#department-tmpl").tmpl(result.Data).appendTo("#resign-data");
+                form.render();
+                console.log(result);
+                return false;
+            });
+
+            $.get("/UserManage/GetUserById", { id: "@ViewBag.Id" }, function (result) {
+                //$("#department-tmpl").tmpl(result.Data).appendTo("#resign-data");
+                if (result.Data != null) {
+                    $("#Name").val(result.Data.Name);
+                    $("#LoginName").val(result.Data.LoginName);
+                    $("#IdentificationCard").val(result.Data.IdentificationCard);
+                    $("#Birthday").val(result.Data.Birthday);
+                    $("#EntryTime").val(result.Data.EntryTime);
+                    $("#department-data").val(result.Data.DepartmentId);
+                    $("#Sex").val(result.Data.Sex);
+                    $("#IsMarried").val(result.Data.IsMarried);
+                    $("#resign-data").val(result.Data.Resign);
+                    $("#Address").val(result.Data.Address);
+                    $("#NativePlace").val(result.Data.NativePlace);
+                    $("#MobilePhone").val(result.Data.MobilePhone);
+                    $("#Email").val(result.Data.Email);
+
+                }
+                form.render();
+                console.log(result);
+                return false;
+            });
+
+            form.verify({
+                title: function (value) {
+                    if (value.length < 3) {
+                        return '至少得3个字符啊';
+                    }
+                }
+
+            });
+            //监听提交
+            form.on('submit(demo1)', function (data) {
+                $.post("/UserInfo/Edit", data.field, function (result) {
+                    if (result.Status == 200) {
+                        layer.msg("添加人员成功", function () {
+                            window.location.href = "/UserManage/Index";
+                        })
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
+</body>
+</html>

@@ -14,5 +14,7 @@ namespace Yang.Management.Repository
         void Save(UserLogin entity);
 
         UserLogin Login(string loginName, string password);
+
+        UserLogin GetPassword(string userId);
     }
 }

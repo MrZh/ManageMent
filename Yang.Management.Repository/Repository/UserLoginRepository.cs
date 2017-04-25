@@ -12,6 +12,11 @@ namespace Yang.Management.Repository.Repository
     {
         public DataContext context = new DataContext();
 
+        public UserLogin GetPassword(string userId)
+        {
+            return this.context.UserLogin.Where(c => c.UserId == userId).FirstOrDefault();
+        }
+
         public UserLogin Login(string loginName, string password)
         {
             password = CommonEncrypt.Encrypt(password);
