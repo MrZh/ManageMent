@@ -16,12 +16,18 @@ namespace Yang.Management.Repository.Repository
         public ListEntity<ListDimissionRecordEntity> GetListByUserId(string id, int pageIndex, int pageSize)
         {
             List<ListDimissionRecordEntity> list = new List<ListDimissionRecordEntity>();
-            int total = this.context.DimissionRecord.Where(c => c.UserId==id).Count();
+            var templist = this.context.DimissionRecord.Where(c => true);
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                templist = templist.Where(c => c.UserId == id);
+            }
+
+            int total = templist.Count();
             if (total <= 0)
             {
                 return new ListEntity<ListDimissionRecordEntity>(list, total, pageIndex, pageSize);
             }
-            List<string> ids = this.context.DimissionRecord.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
+            List<string> ids = templist.OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
             BaseQuery query = new BaseQuery("SELECT Id,DimissionTime,ApplyTime,Type,Content, CreateTime,(SELECT Name from Department where Id=DepartmentId) as DepartmentName, (SELECT Name from UserInfo where Id=UserId) as UserName FROM DimissionRecord where Id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListDimissionRecordEntity>(query);

@@ -31,123 +31,52 @@
     
     <div class="layui-site-content ">
         <h1 class="layui-colla-title title-from">离职登记</h1>
-        <div class="layui-tab">
-            <ul class="layui-tab-title">
-                <li class="layui-this">添加离职记录</li>
-                <li>历史离职记录</li>
-            </ul>
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    
-                    <form class="layui-form form-them" action="">
-                        <input type="hidden" name="UserId" value="@ViewBag.Id" />
-                        <input type="hidden" name="DepartmentId" value="@ViewBag.DepartmentId" />
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">离职人员</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="Name" value="@ViewBag.Name" readonly lay-verify="title" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">离职类别</label>
-                            <div class="layui-input-block">
-                                <select name="Type" id="news-type-data" lay-filter="aihao">
-                                    <option value="2" selected="selected">辞职</option>
-                                    <option value="3" selected="selected">辞退</option>
-                                    <option value="0">合同到期</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">申请日期</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="ApplyTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">离职日期</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="DimissionTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">离职原因</label>
-                            <div class="layui-input-block">
-                                <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
-                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-                <div class="layui-tab-item">
-                    <fieldset class="layui-elem-field">
-                        <legend>离职记录</legend>
-                        <table class="layui-table">
-                            <colgroup>
-                                <col width="150">
-                                <col width="150">
-                                <col width="200">
-                                <col width="200">
-                                <col>
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>新闻标题</th>
-                                    <th>新闻类别</th>
-                                    <th>发布时间</th>
-                                    <th>简介</th>
-                                    <th>简介</th>
-                                </tr>
-                            </thead>
-                            <tbody id="news-data">
-                                <tr>
-                                    <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
-                                    <td>贤心</td>
-                                    <td>汉族</td>
-                                    <td>1989-10-14</td>
-                                    <td>人生似修行</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
-                                    <td>张爱玲</td>
-                                    <td>汉族</td>
-                                    <td>1920-09-30</td>
-                                    <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
-                                    <td>Helen Keller</td>
-                                    <td>拉丁美裔</td>
-                                    <td>1880-06-27</td>
-                                    <td> Life is either a daring adventure or nothing.</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
-                                    <td>岳飞</td>
-                                    <td>汉族</td>
-                                    <td>1103-北宋崇宁二年</td>
-                                    <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
-                                    <td>孟子</td>
-                                    <td>华夏族（汉族）</td>
-                                    <td>公元前-372年</td>
-                                    <td>猿强，则国强。国强，则猿更强！ </td>
-                                </tr>
-                            </tbody>
-                        </table>
+        <div class="layui-tab-item layui-show">
 
-                        <div id="demo1" class="page-box"></div>
-                    </fieldset>
+            <form class="layui-form form-them" action="">
+                <input type="hidden" name="UserId" value="@ViewBag.Id" />
+                <input type="hidden" name="DepartmentId" value="@ViewBag.DepartmentId" />
+                <div class="layui-form-item">
+                    <label class="layui-form-label">离职人员</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Name" value="@ViewBag.Name" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
-            </div>
-
+                <div class="layui-form-item">
+                    <label class="layui-form-label">离职类别</label>
+                    <div class="layui-input-block">
+                        <select name="Type" id="news-type-data" lay-filter="aihao">
+                            <option value="2" selected="selected">辞职</option>
+                            <option value="3" selected="selected">辞退</option>
+                            <option value="0">合同到期</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">申请日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="ApplyTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">离职日期</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="DimissionTime" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">离职原因</label>
+                    <div class="layui-input-block">
+                        <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
         </div>
         
     </div>

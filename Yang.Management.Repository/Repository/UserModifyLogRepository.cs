@@ -15,12 +15,18 @@ namespace Yang.Management.Repository.Repository
         public ListEntity<ListUserModifyLogEntity> GetList(string id, int pageIndex, int pageSize)
         {
             List<ListUserModifyLogEntity> list = new List<ListUserModifyLogEntity>();
-            int total = this.context.SalaryModifyLog.Where(c => c.UserId == id).Count();
+            var templist = this.context.UserModifyLog.Where(c => true);
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                templist = templist.Where(c => c.ModifyUserId == id);
+            }
+
+            int total = templist.Count();
             if (total <= 0)
             {
                 return new ListEntity<ListUserModifyLogEntity>(list, total, pageIndex, pageSize);
             }
-            List<string> ids = this.context.SalaryModifyLog.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
+            List<string> ids = templist.OrderBy(c => c.ModifyTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
             BaseQuery query = new BaseQuery("SELECT Id,ModifyTime,ModifyUserId,CreateUserId,NowDepartmentId,NowResign,OrginalDepartmentId,OriginalResign,Content,(SELECT Name from UserInfo where Id=ModifyUserId) as UserName,(SELECT Name from Resign where id=OriginalResign) as OriginalResignName,(SELECT Name from Resign where id=NowResign) as NowResignName, (SELECT Name from Department where id=OrginalDepartmentId) as OrginalDepartmentName,(SELECT Name from Department where id=NowDepartmentId) as NowDepartmentName  FROM UserModifyLog where id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListUserModifyLogEntity>(query);

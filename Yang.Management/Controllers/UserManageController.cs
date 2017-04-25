@@ -17,6 +17,8 @@ namespace Yang.Management.Controllers
 
         public IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
         public IDimissionRecordRepository iDimissionRecordRepository = new DimissionRecordRepository();
+        public IUserModifyLogRepository iUserModifyLogRepository = new UserModifyLogRepository();
+        public ISalaryModifyLogRepository iSalaryModifyLogRepository = new SalaryModifyLogRepository();
 
         // GET: UserManage
         public ActionResult Index()
@@ -66,6 +68,21 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        public JsonResult GetDimissListByUserId(string userId, int pageIndex, int pageSize)
+        {
+            if (userId == "null")
+            {
+                userId = "";
+            }
+
+            var result = this.iDimissionRecordRepository.GetListByUserId(userId, pageIndex, pageSize);
+            return new JsonResult
+            {
+                Data = new Result(result),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         public ActionResult Dismiss(String id)
         {
             ViewBag.Id = id;
@@ -91,6 +108,7 @@ namespace Yang.Management.Controllers
                 user.Status = 3;
             }
             iDimissionRecordRepository.Save(entity);
+            iUserInfoRepository.Save(user);
             return new JsonResult
             {
                 Data = new Result(null),
@@ -109,9 +127,41 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult UserModify(UserModifyLog entity)
+        {
+            entity.ModifyTime = DateTime.Now;
+            entity.CreateUserId = CurrentUserId;
+            UserInfo user = new UserInfo();
+            user.Id = entity.ModifyUserId;
+            user.DepartmentId = entity.NowDepartmentId;
+            user.Resign = entity.NowResign;
+            iUserModifyLogRepository.Save(entity);
+            iUserInfoRepository.Save(user);
+            return new JsonResult
+            {
+                Data = new Result(null),
+            };
+        }
+
         public ActionResult UserModifyRecord()
         {
             return View();
+        }
+
+        public JsonResult GetModifyListByUserId(string userId, int pageIndex, int pageSize)
+        {
+            if (userId == "null")
+            {
+                userId = "";
+            }
+
+            var result = this.iUserModifyLogRepository.GetList(userId, pageIndex, pageSize);
+            return new JsonResult
+            {
+                Data = new Result(result),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         public ActionResult UserSalaryModify(string id)
@@ -120,10 +170,40 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        [HttpPost]
+        public JsonResult UserSalaryModify(SalaryModifyLog entity)
+        {
+            entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = CurrentUserId;
+            UserInfo user = new UserInfo();
+            user.Id = entity.UserId;
+            user.Salary = entity.SalaryModify;
+            iSalaryModifyLogRepository.Save(entity);
+            iUserInfoRepository.Save(user);
+            return new JsonResult
+            {
+                Data = new Result(null),
+            };
+        }
 
         public ActionResult UserSalaryModifyRecord()
         {
             return View();
+        }
+
+        public JsonResult GetSalaryModifyListByUserId(string userId, int pageIndex, int pageSize)
+        {
+            if (userId == "null")
+            {
+                userId = "";
+            }
+
+            var result = this.iSalaryModifyLogRepository.GetList(userId, pageIndex, pageSize);
+            return new JsonResult
+            {
+                Data = new Result(result),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
         }
 
         public ActionResult IsExist(string name)

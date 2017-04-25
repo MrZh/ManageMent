@@ -111,11 +111,9 @@
             element = layui.element(),
             laypage = layui.laypage;
 
-        var year = "";
-        var month = "";
         var userId = "";
 
-        $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -137,7 +135,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                 console.log(result.Data);
@@ -147,22 +145,14 @@
         }
 
         var render = function (data) {
-            $("#attendance-data").empty();
-            $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
+            //$("#attendance-data").empty();
+            //$("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
 
         }
 
         var search = function () {
-
-
-            if ($("#year-data").val() == "null" && $("#month-data").val() != "null") {
-                layer.msg('请选择年份');
-                return false;
-            }
             userId = $("#user-data").val();
-            month = $("#month-data").val();
-            year = $("#year-data").val();
-            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'

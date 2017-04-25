@@ -15,12 +15,18 @@ namespace Yang.Management.Repository.Repository
         public ListEntity<ListSalaryModifyLogEntity> GetList(string id, int pageIndex, int pageSize)
         {
             List<ListSalaryModifyLogEntity> list = new List<ListSalaryModifyLogEntity>();
-            int total = this.context.SalaryModifyLog.Where(c => c.UserId == id).Count();
+            var templist = this.context.SalaryModifyLog.Where(c => true);
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                templist = templist.Where(c => c.UserId == id);
+            }
+
+            int total = templist.Count();
             if (total <= 0)
             {
                 return new ListEntity<ListSalaryModifyLogEntity>(list, total, pageIndex, pageSize);
             }
-            List<string> ids = this.context.SalaryModifyLog.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
+            List<string> ids = templist.OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
             BaseQuery query = new BaseQuery("SELECT Id, UserId,CreateTime,CreateUserId,SalaryModify,OriginalSalary,Content,(SELECT Name from UserInfo where Id=UserId) as UserName FROM SalaryModifyLog where Id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListSalaryModifyLogEntity>(query);
