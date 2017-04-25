@@ -22,7 +22,7 @@ namespace Yang.Management.Repository.Repository
             }
             List<string> ids = this.context.SalaryModifyLog.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
-            BaseQuery query = new BaseQuery("SELECT id,UserId,CreateTime,Type,Content,(SELECT Name from UserInfo where id=UserId) as UserName, (select Name from Department where id=DepartmentId) as DepartmentName FROM DimissionRecord where id in @ids", new { ids = ids });
+            BaseQuery query = new BaseQuery("SELECT Id,ModifyTime,ModifyUserId,CreateUserId,NowDepartmentId,NowResign,OrginalDepartmentId,OriginalResign,Content,(SELECT Name from UserInfo where Id=ModifyUserId) as UserName,(SELECT Name from Resign where id=OriginalResign) as OriginalResignName,(SELECT Name from Resign where id=NowResign) as NowResignName, (SELECT Name from Department where id=OrginalDepartmentId) as OrginalDepartmentName,(SELECT Name from Department where id=NowDepartmentId) as NowDepartmentName  FROM UserModifyLog where id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListUserModifyLogEntity>(query);
             return new ListEntity<ListUserModifyLogEntity>(list, total, pageIndex, pageSize);
         }
@@ -49,6 +49,7 @@ namespace Yang.Management.Repository.Repository
             dbclass.NowResign = entity.NowResign == null ? dbclass.NowResign : entity.NowResign;
             dbclass.OrginalDepartmentId = entity.OrginalDepartmentId == null ? dbclass.OrginalDepartmentId : entity.OrginalDepartmentId;
             dbclass.OriginalResign = entity.OriginalResign == null ? dbclass.OriginalResign : entity.OriginalResign;
+            dbclass.Content = entity.Content == null ? dbclass.Content : entity.Content;
 
             this.context.SaveChanges();
         }

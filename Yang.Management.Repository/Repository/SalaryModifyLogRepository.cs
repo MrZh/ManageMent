@@ -22,7 +22,7 @@ namespace Yang.Management.Repository.Repository
             }
             List<string> ids = this.context.SalaryModifyLog.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
-            BaseQuery query = new BaseQuery("SELECT id,UserId,CreateTime,Type,Content,(SELECT Name from UserInfo where id=UserId) as UserName, (select Name from Department where id=DepartmentId) as DepartmentName FROM DimissionRecord where id in @ids", new { ids = ids });
+            BaseQuery query = new BaseQuery("SELECT Id, UserId,CreateTime,CreateUserId,SalaryModify,OriginalSalary,Content,(SELECT Name from UserInfo where Id=UserId) as UserName FROM SalaryModifyLog where Id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListSalaryModifyLogEntity>(query);
             return new ListEntity<ListSalaryModifyLogEntity>(list, total, pageIndex, pageSize);
         }

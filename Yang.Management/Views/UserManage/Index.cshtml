@@ -48,7 +48,7 @@
         <div class="button-box">
             <button class="layui-btn" id="addBtn">新增人员</button>
             <button class="layui-btn" id="modifyBtn">修改人员</button>
-            <button class="layui-btn" id="">员工离职</button>
+            <button class="layui-btn" id="dismissBtn">员工离职</button>
             <button class="layui-btn">人事变动</button>
             <button class="layui-btn">员工转正</button>
             <button class="layui-btn layui-btn-danger" id="delBtn">删除人员</button>
@@ -196,7 +196,7 @@
                 }
 
                 if (id.length < 1) {
-                    layer.msg("请选中要修改的职务");
+                    layer.msg("请选中要修改的职员");
                     return false;
                 }
 
@@ -230,6 +230,29 @@
                     return false;
                 });
                 console.log(id);
+            })
+
+            $("#dismissBtn").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能操作一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要操作的职员");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/UserManage/Dismiss?id=" + id[0];
             })
         })
     });

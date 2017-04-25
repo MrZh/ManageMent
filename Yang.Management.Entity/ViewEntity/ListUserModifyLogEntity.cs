@@ -37,7 +37,10 @@ namespace Yang.Management.Entity.ViewEntity
 
         public string ModifyUserId { get; set; }
 
+        public string UserName { get; set; }
 
         public string CreateUserId { get; set; }
+
+        public string Content { get; set; }
     }
 }

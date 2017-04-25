@@ -16,6 +16,7 @@ namespace Yang.Management.Controllers
     {
 
         public IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
+        public IDimissionRecordRepository iDimissionRecordRepository = new DimissionRecordRepository();
 
         // GET: UserManage
         public ActionResult Index()
@@ -60,10 +61,40 @@ namespace Yang.Management.Controllers
             };
         }
 
+        public ActionResult DimissRecord()
+        {
+            return View();
+        }
+
         public ActionResult Dismiss(String id)
         {
             ViewBag.Id = id;
+            var user = iUserInfoRepository.GetUserById(id);
+            if (user != null)
+            {
+                ViewBag.Name = user.Name;
+                ViewBag.DepartmentId = user.DepartmentId;
+            }
             return View();
+        }
+
+        [HttpPost]
+        public JsonResult Dismiss(DimissionRecord entity)
+        {
+            entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = CurrentUserId;
+            UserInfo user = new UserInfo();
+            user.Id = entity.UserId;
+            user.Status = 2;
+            if (entity.Type == 3)
+            {
+                user.Status = 3;
+            }
+            iDimissionRecordRepository.Save(entity);
+            return new JsonResult
+            {
+                Data = new Result(null),
+            };
         }
 
         public ActionResult ChangePassword()
@@ -78,9 +109,20 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        public ActionResult UserModifyRecord()
+        {
+            return View();
+        }
+
         public ActionResult UserSalaryModify(string id)
         {
             ViewBag.Id = id;
+            return View();
+        }
+
+
+        public ActionResult UserSalaryModifyRecord()
+        {
             return View();
         }
 

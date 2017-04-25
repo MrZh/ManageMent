@@ -30,7 +30,7 @@
     </ul>
     
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新增离职信息</h1>
+        <h1 class="layui-colla-title title-from">离职登记</h1>
         <div class="layui-tab">
             <ul class="layui-tab-title">
                 <li class="layui-this">添加离职记录</li>
@@ -40,19 +40,21 @@
                 <div class="layui-tab-item layui-show">
                     
                     <form class="layui-form form-them" action="">
+                        <input type="hidden" name="UserId" value="@ViewBag.Id" />
+                        <input type="hidden" name="DepartmentId" value="@ViewBag.DepartmentId" />
                         <div class="layui-form-item">
                             <label class="layui-form-label">离职人员</label>
                             <div class="layui-input-block">
-                                <input type="text" name="Title" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="Name" value="@ViewBag.Name" readonly lay-verify="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">离职类别</label>
                             <div class="layui-input-block">
-                                <select name="NewsTypeId" id="news-type-data" lay-filter="aihao">
-                                    <option value="辞职" selected="selected">辞职</option>
-                                    <option value="辞退" selected="selected">辞退</option>
-                                    <option value="合同到期">合同到期</option>
+                                <select name="Type" id="news-type-data" lay-filter="aihao">
+                                    <option value="2" selected="selected">辞职</option>
+                                    <option value="3" selected="selected">辞退</option>
+                                    <option value="0">合同到期</option>
                                 </select>
                             </div>
                         </div>
@@ -71,12 +73,12 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">离职原因</label>
                             <div class="layui-input-block">
-                                <textarea id="Content" name="Contents" style="width:400px;height:200px"></textarea>
+                                <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -174,19 +176,18 @@
 
             form.verify({
                 title: function (value) {
-                    if (value.length < 5) {
-                        return '标题至少得5个字符啊';
+                    if (value.length < 3) {
+                        return '至少3个字符啊';
                     }
                 }
             });
             //监听提交
-            form.on('submit(demo1)', function (data) {
-                data.field.Contents = layedit.getContent(index);
+            form.on('submit(demo2)', function (data) {
                 console.log(data.field);
-                $.post("/News/Create", data.field, function (result) {
+                $.post("/UserManage/Dismiss", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加新闻成功", function () {
-                            window.location.href = "/News/Index";
+                        layer.msg("添加信息成功", function () {
+                            window.location.href = "/UserManage/Index";
                         })
                     }
                 });

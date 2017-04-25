@@ -57,5 +57,7 @@ namespace Yang.Management.Entity.DataEntity
 
         [StringLength(255)]
         public string Password { get; set; }
+
+        public decimal? Salary { get; set; }
     }
 }

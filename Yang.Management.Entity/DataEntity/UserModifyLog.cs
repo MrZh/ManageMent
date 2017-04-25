@@ -31,5 +31,7 @@ namespace Yang.Management.Entity.DataEntity
 
         [StringLength(50)]
         public string CreateUserId { get; set; }
+
+        public string Content { get; set; }
     }
 }

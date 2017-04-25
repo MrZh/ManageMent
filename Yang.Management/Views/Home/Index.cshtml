@@ -54,7 +54,7 @@
             </div>
             <div class="site-right">
                 <div class="sign">
-                    <button class="layui-btn layui-btn-normal">签到</button>
+                    <button class="layui-btn layui-btn-normal" id="login">签到</button>
                 </div>
                 <fieldset class="layui-elem-field">
                     <legend>近期签到记录</legend>
@@ -96,6 +96,19 @@
             $("#userinfo").text(result.Data.UserName);
             return false;
         });
+        $.get("/MyAttendance/IsAttendance", function (result) {
+            if (result.Status == 513) {
+
+            } else if (result.Status == 514) {
+                $("#login").text("签退");
+            } else {
+                $("#login").text("已签退");
+            }
+            console.log(result.Data);
+            form.render();
+            return false;
+        });
+        
 
         $.get("/News/GetNewsByType", { type: 1, pageIndex: 1, pageSize: 2 }, function (result) {
             render(result.Data.Entity);
@@ -116,6 +129,13 @@
             return false;
         });
 
+        $("#login").click(function () {
+            $.get("/MyAttendance/Attendance", function (result) {
+                console.log(result.Data);
+                form.render();
+                return false;
+            });
+        })
         var render = function (data) {
             $("#news-data").empty();
             $("#news-tmpl").tmpl(data).appendTo("#news-data");

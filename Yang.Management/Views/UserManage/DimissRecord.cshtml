@@ -1,0 +1,204 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>人事管理系统</title>
+    <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
+    <link href="~/Content/style/admin.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="layui-header">
+        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+    </div>
+    <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
+        <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
+        <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
+        <li class="layui-nav-item layui-this"><a href="/Attendance/Index">考勤管理</a></li>
+        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+        <li class="layui-nav-item"><a href="">个人信息</a></li>
+        <li class="layui-nav-item"><a href="">密码修改</a></li>
+    </ul>
+    <div class="layui-site-content ">
+        <h1 class="layui-colla-title title-from">考勤管理</h1>
+        <div class="layui-clear search-box">
+            <div class="site-left">
+                <div class="site-content">
+                    <div class="layui-inline">
+                        <div class="layui-input-inline layui-form">
+                            <label class="layui-form-label">用户</label>
+                            <div class="layui-input-block">
+                                <select name="UserId" id="user-data" lay-filter="aihao">
+                                    <option value="null">-- --</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="site-right">
+                <button class="layui-btn layui-btn-normal" id="searchBtn">搜索</button>
+            </div>
+        </div>
+        <div class="button-box">
+            @*<button class="layui-btn" id="add">新增人员</button>
+                <button class="layui-btn">修改人员</button>
+                <button class="layui-btn">员工离职</button>
+                <button class="layui-btn">人事变动</button>
+                <button class="layui-btn">员工转正</button>
+                <button class="layui-btn layui-btn-danger">删除人员</button>*@
+        </div>
+        <div class="layui-form">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="50">
+                    <col width="150">
+                    <col width="150">
+                    <col width="200">
+                    <col width="150">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                        <th>姓名</th>
+                        <th>年份/月份</th>
+                        <th>是否迟到</th>
+                        <th>签到时间</th>
+                        <th>是否早退</th>
+                        <th>签退时间</th>
+                    </tr>
+                </thead>
+                <tbody id="attendance-data"></tbody>
+            </table>
+        </div>
+        <div id="demo1" class="page-box"></div>
+    </div>
+    <script src="~/Content/jquery-1.10.2.min.js"></script>
+    <script src="~/Content/layui/layui.js"></script>
+    <script src="~/Content/jquery.tmpl.min.js"></script>
+    <script type="text/x-jquery-tmpl" id="attendance-tmpl">
+        <tr>
+            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
+            <td>${UserName}</td>
+            <td>${AttendanceMonth}/${AttendanceYear}</td>
+            <td>{{if AttendanceType=="0"}} 迟到 {{/if}}{{if AttendanceType=="1"}}正常 {{/if}}</td>
+            <td>${AttendanceTime}</td>
+            <td>{{if LogoutType=="0"}} 早退 {{/if}}{{if LogoutType=="1"}}正常 {{/if}}</td>
+            <td>${LogoutTime}</td>
+        </tr>
+    </script>
+    <script type="text/x-jquery-tmpl" id="user-tmpl">
+        <option value="${Id}">${Name}</option>
+    </script>
+    <script>
+
+    //一般直接写在一个js文件中
+    layui.use(['jquery','layer', 'form', 'element','laypage'], function () {
+        var $ = layui.jquery,
+            layer = layui.layer,
+            form = layui.form(),
+            element = layui.element(),
+            laypage = layui.laypage;
+
+        var year = "";
+        var month = "";
+        var userId = "";
+
+        $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            laypage({
+                cont: 'demo1'
+                , pages: result.Data.TotalPage //总页数
+                , groups: 5 //
+                , jump: function (result) {
+                    getPage(result);
+                }
+            });
+            form.render();
+            return false;
+        });
+
+        $.get("/UserManage/GetAllUserList", function (result) {
+            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+            $("#user-tmpl").tmpl(result.Data).appendTo("#user-data");
+            form.render();
+            return false;
+        });
+
+        var getPage = function (obj) {
+            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                render(result.Data.Entity);
+                console.log(result.Data);
+                form.render();
+                return false;
+            });
+        }
+
+        var render = function (data) {
+            $("#attendance-data").empty();
+            $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
+
+        }
+
+        var search = function () {
+
+
+            if ($("#year-data").val() == "null" && $("#month-data").val() != "null") {
+                layer.msg('请选择年份');
+                return false;
+            }
+            userId = $("#user-data").val();
+            month = $("#month-data").val();
+            year = $("#year-data").val();
+            $.get("/Attendance/GetListByUserId", { userId: userId, year: year, month: month, pageIndex: 1, pageSize: 2 }, function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                laypage({
+                    cont: 'demo1'
+                    , pages: result.Data.TotalPage //总页数
+                    , groups: 5 //
+                    , jump: function (result) {
+                        getPage(result);
+                    }
+                });
+                render(result.Data.Entity);
+                form.render();
+                return false;
+            });
+        }
+         //全选
+        form.on('checkbox(allChoose)', function(data){
+            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+            child.each(function(index, item){
+            item.checked = data.elem.checked;
+            });
+            form.render('checkbox');
+        });
+        $(function(){
+            $('#add').click(function () {
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        console.log($(this).val());
+                    }
+                })
+            });
+            $("#searchBtn").click(function () {
+                search();
+            });
+
+        })
+    });
+    </script>
+</body>
+</html>

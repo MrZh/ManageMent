@@ -40,10 +40,11 @@
                 <div class="layui-tab-item layui-show">
 
                     <form class="layui-form form-them" action="">
+                        <input type="hidden" name="UserId" value="@ViewBag.Id" />
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整人员</label>
                             <div class="layui-input-block">
-                                <input type="text" name="Title" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="Title" value="11111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -58,19 +59,19 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整前薪资</label>
                             <div class="layui-input-block">
-                                <input type="text" name="OriginalSalary" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="OriginalSalary" value="11111" readonly lay-verify="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整后薪资</label>
                             <div class="layui-input-block">
-                                <input type="text" name="SalaryModify" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="SalaryModify" lay-verify="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
-                                <textarea id="Content" name="Contents" style="width:400px;height:200px"></textarea>
+                                <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -180,15 +181,7 @@
             });
             //监听提交
             form.on('submit(demo1)', function (data) {
-                data.field.Contents = layedit.getContent(index);
                 console.log(data.field);
-                $.post("/News/Create", data.field, function (result) {
-                    if (result.Status == 200) {
-                        layer.msg("添加新闻成功", function () {
-                            window.location.href = "/News/Index";
-                        })
-                    }
-                });
                 return false;
             });
         });

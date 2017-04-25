@@ -334,6 +334,9 @@
     <Content Include="Views\UserManage\ChangePassword.cshtml" />
     <Content Include="Views\UserInfo\ChangePassword.cshtml" />
     <Content Include="Views\UserInfo\Index.cshtml" />
+    <Content Include="Views\UserManage\DimissRecord.cshtml" />
+    <Content Include="Views\UserManage\UserModifyRecord.cshtml" />
+    <Content Include="Views\UserManage\UserSalaryModifyRecord.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

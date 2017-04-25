@@ -40,61 +40,55 @@
                 <div class="layui-tab-item layui-show">
 
                     <form class="layui-form form-them" action="">
+                        <input type="hidden" value="@ViewBag.Id" name="UserId" />
+                        
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整人员</label>
                             <div class="layui-input-block">
-                                <input type="text" name="Title" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                                <input type="text" name="Title" value="111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">原始部门</label>
                             <div class="layui-input-block">
-                                <select name="OrginalDepartmentId" id="news-type-data" lay-filter="aihao">
-                                    <option value="辞职" selected="selected">辞职</option>
-                                    <option value="辞退" selected="selected">辞退</option>
-                                    <option value="合同到期">合同到期</option>
+                                <select name="OrginalDepartmentId" class="department-data" disabled id="news-type-data" lay-filter="aihao">
+                                    <option value="1">1</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整部门</label>
                             <div class="layui-input-block">
-                                <select name="NowDepartmentId" id="news-type-data" lay-filter="aihao">
-                                    <option value="辞职" selected="selected">辞职</option>
-                                    <option value="辞退" selected="selected">辞退</option>
-                                    <option value="合同到期">合同到期</option>
+                                <select name="NowDepartmentId" class="department-data" id="department-data" lay-filter="aihao">
+                                    <option value="1">1</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">原始职位</label>
                             <div class="layui-input-block">
-                                <select name="OriginalResign" id="news-type-data" lay-filter="aihao">
-                                    <option value="辞职" selected="selected">辞职</option>
-                                    <option value="辞退" selected="selected">辞退</option>
-                                    <option value="合同到期">合同到期</option>
+                                <select name="OriginalResign" class="resign-data" id="news-type-dat" lay-filter="aihao">
+                                    <option value="1">1</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">调整职位</label>
                             <div class="layui-input-block">
-                                <select name="NowResign" id="news-type-data" lay-filter="aihao">
-                                    <option value="辞职" selected="selected">辞职</option>
-                                    <option value="辞退" selected="selected">辞退</option>
-                                    <option value="合同到期">合同到期</option>
+                                <select name="NowResign" class="resign-data" id="resign-data" lay-filter="aihao">
+                                    <option value="1">1</option>
                                 </select>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label">备注</label>
                             <div class="layui-input-block">
-                                <textarea id="Content" name="Contents" style="width:400px;height:200px"></textarea>
+                                <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit="" lay-filter="demo1">立即提交</button>
+                                <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>
                         </div>
@@ -170,8 +164,8 @@
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
     <script src="~/Content/jquery.tmpl.min.js"></script>
-    <script type="text/x-jquery-tmpl" id="news-type-tmpl">
-        <option value="${name}">${id}</option>
+    <script type="text/x-jquery-tmpl" id="department-tmpl">
+        <option value="${Id}">${Name}</option>
     </script>
     <script>
 
@@ -184,11 +178,22 @@
                 element = layui.element(),
                 laypage = layui.laypage,
                 laydate = layui.laydate;
-            //$.get("/News/GetIndexNews", { type: "type" }, function (result) {
-            //    $("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-            //    form.render();
-            //    return false;
-            //});
+
+            $.get("/Department/GetAllDepartment", { type: "type" }, function (result) {
+                $(".department-data").empty();
+                $("#department-tmpl").tmpl(result.Data).appendTo(".department-data");
+                form.render();
+                console.log(result);
+                return false;
+            });
+
+            $.get("/Resign/GetAllResign", { type: "type" }, function (result) {
+                $(".resign-data").empty();
+                $("#department-tmpl").tmpl(result.Data).appendTo(".resign-data");
+                form.render();
+                console.log(result);
+                return false;
+            });
 
             form.verify({
                 title: function (value) {
@@ -198,16 +203,8 @@
                 }
             });
             //监听提交
-            form.on('submit(demo1)', function (data) {
-                data.field.Contents = layedit.getContent(index);
+            form.on('submit(demo2)', function (data) {
                 console.log(data.field);
-                $.post("/News/Create", data.field, function (result) {
-                    if (result.Status == 200) {
-                        layer.msg("添加新闻成功", function () {
-                            window.location.href = "/News/Index";
-                        })
-                    }
-                });
                 return false;
             });
         });

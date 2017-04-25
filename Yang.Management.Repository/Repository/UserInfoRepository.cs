@@ -88,7 +88,8 @@ namespace Yang.Management.Repository.Repository
                 this.context.UserInfo.Add(dbclass);
                 UserLogin userlogin = new UserLogin();
                 userlogin.Id = Guid.NewGuid().ToString();
-                userlogin.Name = entity.Name;
+                userlogin.Name = entity.LoginName;
+                userlogin.UserId = entity.Id;
                 userlogin.RealName = entity.Name;                
                 userlogin.PassWord = CommonEncrypt.Encrypt(entity.Password);
                 entity.Password = CommonEncrypt.Encrypt(entity.Password);
@@ -113,7 +114,7 @@ namespace Yang.Management.Repository.Repository
             dbclass.Resign = entity.Resign == null ? dbclass.Resign : entity.Resign;
             dbclass.Sex = entity.Sex == null ? dbclass.Sex : entity.Sex;
             dbclass.Status = entity.Status == null ? dbclass.Status : entity.Status;
-
+            dbclass.Salary = entity.Salary == null ? dbclass.Salary : entity.Salary;
             this.context.SaveChanges();
         }
 

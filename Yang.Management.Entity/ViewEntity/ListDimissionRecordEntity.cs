@@ -12,6 +12,10 @@ namespace Yang.Management.Entity.ViewEntity
 
         public string CreateTime { get; set; }
 
+        public string DimissionTime { get; set; }
+
+        public string ApplyTime { get; set; }
+
         public string Type { get; set; }
 
         public string Content { get; set; }

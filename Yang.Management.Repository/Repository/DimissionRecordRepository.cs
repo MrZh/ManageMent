@@ -23,7 +23,7 @@ namespace Yang.Management.Repository.Repository
             }
             List<string> ids = this.context.DimissionRecord.Where(c => c.UserId == id).OrderBy(c => c.CreateTime).Skip((pageIndex - 1) * pageSize).Take(pageSize).Select(c => c.Id).ToList();
 
-            BaseQuery query = new BaseQuery("SELECT id,UserId,CreateTime,Type,Content,(SELECT Name from UserInfo where id=UserId) as UserName, (select Name from Department where id=DepartmentId) as DepartmentName FROM DimissionRecord where id in @ids", new { ids = ids });
+            BaseQuery query = new BaseQuery("SELECT Id,DimissionTime,ApplyTime,Type,Content, CreateTime,(SELECT Name from Department where Id=DepartmentId) as DepartmentName, (SELECT Name from UserInfo where Id=UserId) as UserName FROM DimissionRecord where Id in @ids", new { ids = ids });
             list = DapperContext.BaseGetListByParam<ListDimissionRecordEntity>(query);
             return new ListEntity<ListDimissionRecordEntity>(list, total, pageIndex, pageSize);
         }
@@ -50,6 +50,8 @@ namespace Yang.Management.Repository.Repository
             dbclass.Content = entity.Content == null ? dbclass.Content : entity.Content;
             dbclass.DepartmentId = entity.DepartmentId == null ? dbclass.DepartmentId : entity.DepartmentId;
             dbclass.Type = entity.Type == null ? dbclass.Type : entity.Type;
+            dbclass.DimissionTime = entity.DimissionTime == null ? dbclass.DimissionTime : entity.DimissionTime;
+            dbclass.ApplyTime = entity.ApplyTime == null ? dbclass.ApplyTime : entity.ApplyTime;
 
             this.context.SaveChanges();
         }
