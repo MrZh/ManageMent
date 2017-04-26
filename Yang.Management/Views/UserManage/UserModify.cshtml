@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="layui-header">
-        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+        <p class="login-fun">欢迎您<span id="userinfo" style="margin-left:10px"></span><a class="layui-btn layui-btn-normal logout">退出</a></p>
     </div>
     <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
@@ -39,13 +39,13 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">调整人员</label>
                     <div class="layui-input-block">
-                        <input type="text" name="Title" value="111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                        <input type="text" name="Title" id="userName" readonly lay-verify="title" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">原始部门</label>
                     <div class="layui-input-block">
-                        <select name="OrginalDepartmentId" class="department-data" disabled id="news-type-data" lay-filter="aihao">
+                        <select name="OrginalDepartmentId" class="department-data" disabled id="ori-department" lay-filter="aihao">
                             <option value="1">1</option>
                         </select>
                     </div>
@@ -53,7 +53,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">调整部门</label>
                     <div class="layui-input-block">
-                        <select name="NowDepartmentId" class="department-data" id="department-data" lay-filter="aihao">
+                        <select name="NowDepartmentId" class="department-data" id="new-department" lay-filter="aihao">
                             <option value="1">1</option>
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">原始职位</label>
                     <div class="layui-input-block">
-                        <select name="OriginalResign" class="resign-data" disabled id="news-type-dat" lay-filter="aihao">
+                        <select name="OriginalResign" class="resign-data" disabled id="ori-resign" lay-filter="aihao">
                             <option value="1">1</option>
                         </select>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">调整职位</label>
                     <div class="layui-input-block">
-                        <select name="NowResign" class="resign-data" id="resign-data" lay-filter="aihao">
+                        <select name="NowResign" class="resign-data" id="new-resign" lay-filter="aihao">
                             <option value="1">1</option>
                         </select>
                     </div>
@@ -106,12 +106,20 @@
                 element = layui.element(),
                 laypage = layui.laypage,
                 laydate = layui.laydate;
+
+            $(".logout").on("click", function () {
+                location.href = "/Login/Logout"
+            });
             $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
                 if (result.Status == 125) {
                     location.href = "/Login/Index";
                 }
 
+                $("#userName").text(result.Data.UserName);
                 $("#userinfo").text(result.Data.UserName);
+                $("#ori-resign").text(result.Data.Resign);
+                $("#ori-department").text(result.Data.DepartmentId);
+
                 return false;
             });
             $.get("/Department/GetAllDepartment", { type: "type" }, function (result) {

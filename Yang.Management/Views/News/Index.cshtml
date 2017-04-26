@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="layui-header">
-        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+        <p class="login-fun">欢迎您<span id="userinfo" style="margin-left:10px"></span><a class="layui-btn layui-btn-normal logout">退出</a></p>
     </div>
     <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
@@ -97,7 +97,9 @@
             element = layui.element(),
             laypage = layui.laypage;
         keyword = "";
-
+        $(".logout").on("click", function () {
+            location.href = "/Login/Logout"
+        });
         $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
             if (result.Status == 125) {
                 location.href = "/Login/Index";

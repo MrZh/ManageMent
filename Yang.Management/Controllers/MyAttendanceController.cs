@@ -39,9 +39,9 @@ namespace Yang.Management.Controllers
 
             return new JsonResult
             {
-                Data = new Result(new { UserName = user.Name }),
+                Data = new Result(new { UserName = user.Name, Id = user.Id, DepartmentId = user.DepartmentId, Resign = user.Resign, Salary = user.Salary }),
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
-                
+
             };
         }
 

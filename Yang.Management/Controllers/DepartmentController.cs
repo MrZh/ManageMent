@@ -12,7 +12,7 @@ using Yang.Management.Repository.Repository;
 
 namespace Yang.Management.Controllers
 {
-    public class DepartmentController : Controller
+    public class DepartmentController : BaseController
     {
 
         public IDepartmentRepository iDepartmentRepository = new DepartmentRepository();
@@ -34,6 +34,7 @@ namespace Yang.Management.Controllers
         public JsonResult Create(Department entity)
         {
             entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = this.CurrentUserId;
             if (entity.ParentDepartmentId.Equals("null"))
             {
                 entity.ParentDepartmentId = null;
@@ -58,6 +59,7 @@ namespace Yang.Management.Controllers
         public JsonResult Edit(Department entity)
         {
             entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = this.CurrentUserId;
             if (entity.ParentDepartmentId.Equals("null"))
             {
                 entity.ParentDepartmentId = null;

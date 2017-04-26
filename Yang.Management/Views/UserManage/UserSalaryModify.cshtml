@@ -14,7 +14,7 @@
 </head>
 <body>
     <div class="layui-header">
-        <p class="login-fun">欢迎您<a class="layui-btn layui-btn-normal">退出</a></p>
+        <p class="login-fun">欢迎您<span id="userinfo" style="margin-left:10px"></span><a class="layui-btn layui-btn-normal logout">退出</a></p>
     </div>
     <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
@@ -38,7 +38,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">调整人员</label>
                     <div class="layui-input-block">
-                        <input type="text" name="Title" value="11111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                        <input type="text" name="Title" id="userName" readonly lay-verify="title" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -100,12 +100,16 @@
             //    form.render();
             //    return false;
             //});
+            $(".logout").on("click", function () {
+                location.href = "/Login/Logout"
+            });
             $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
                 if (result.Status == 125) {
                     location.href = "/Login/Index";
                 }
 
                 $("#userinfo").text(result.Data.UserName);
+                $("#userName").text(result.Data.UserName);
                 return false;
             });
 

@@ -12,7 +12,7 @@ using Yang.Management.Repository.Repository;
 
 namespace Yang.Management.Controllers
 {
-    public class ResignController : Controller
+    public class ResignController : BaseController
     {
         public IResignRepository iResignRepository = new ResignRepository();
         // GET: Resign
@@ -33,6 +33,7 @@ namespace Yang.Management.Controllers
         public JsonResult Create(Resign entity)
         {
             entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = this.CurrentUserId;
             this.iResignRepository.Save(entity);
 
             return new JsonResult
@@ -53,6 +54,7 @@ namespace Yang.Management.Controllers
         public JsonResult Edit(Resign entity)
         {
             entity.CreateTime = DateTime.Now;
+            entity.CreateUserId = this.CurrentUserId;
             this.iResignRepository.Save(entity);
 
             return new JsonResult
