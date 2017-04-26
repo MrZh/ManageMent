@@ -1,6 +1,14 @@
 ﻿
 @{
     Layout = null;
+    bool isAdmin = false;
+    if (Session["CurrentUserType"] != null)
+    {
+        if (Session["CurrentUserType"].ToString() == "1")
+        {
+            isAdmin = true;
+        }
+    }
 }
 
 <!DOCTYPE html>
@@ -8,7 +16,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>人事管理系统</title>
+    <title>@isAdmin</title>
     <link href="~/Content/layui/css/layui.css" rel="stylesheet" />
     <link href="~/Content/style/admin.css" rel="stylesheet" />
 </head>
@@ -20,11 +28,14 @@
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
         <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item layui-this"><a href="/MyAttendance/Index">我的考勤</a></li>
+        @if (isAdmin)
+        {
         <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
         <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
         <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
         <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
         <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+        }
         <li class="layui-nav-item"><a href="">个人信息</a></li>
         <li class="layui-nav-item"><a href="">密码修改</a></li>
     </ul>

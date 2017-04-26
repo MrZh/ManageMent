@@ -13,6 +13,7 @@ namespace Yang.Management.Controllers
     public class LoginController : BaseController
     {
         IUserLoginRepository iUserLoginRepository = new UserLoginRepository();
+        IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
         // GET: Login
         public ActionResult Index()
         {
@@ -37,6 +38,15 @@ namespace Yang.Management.Controllers
             if (entity != null)
             {
                 Session["CurrentUserId"] = entity.UserId;
+                Session["CurrentUserType"] = "0";
+                var user = this.iUserInfoRepository.GetUserById(entity.UserId);
+                if (user != null)
+                {
+                    if (user.DepartmentId == "2c629df4-0f2f-4f64-8cc2-4fc8ce4dfb8a")
+                    {
+                        Session["CurrentUserType"] = "1";
+                    }
+                }
                 result = 200;
             }
 
