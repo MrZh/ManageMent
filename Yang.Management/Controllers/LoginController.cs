@@ -19,6 +19,15 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        public JsonResult NotLogin()
+        {
+            return new JsonResult
+            {
+                Data = new Result(125, null, ""),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
         [HttpPost]
         public JsonResult Login(string userName, string passWord)
         {

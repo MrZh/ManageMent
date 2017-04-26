@@ -81,7 +81,14 @@
             form = layui.form(),
             element = layui.element(),
             laypage = layui.laypage;
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
 
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
         $.get("/News/NewsDetail", { id: "@ViewBag.Id" }, function (result) {
             $("#Title").text(result.Data.Title);
             $("#CreateTime").text(result.Data.CreateTime);

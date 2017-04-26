@@ -84,6 +84,14 @@
                     url: '/Upload/Upload' 
                 }
             });
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
+
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             var index = layedit.build('Content');
             //$.get("/News/GetIndexNews", { type: "type" }, function (result) {
             //    $("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");

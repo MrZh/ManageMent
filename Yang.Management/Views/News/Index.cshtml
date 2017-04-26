@@ -98,6 +98,14 @@
             laypage = layui.laypage;
         keyword = "";
 
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
+
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
         $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({

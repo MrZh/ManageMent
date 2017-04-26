@@ -17,13 +17,15 @@ namespace Yang.Management.Controllers
     {
         public INewsRepository iNewsRepository = new NewsRepository();
 
-        
+
+        [LoginCheck]
         public ActionResult GetDetail(string id)
         {
             ViewBag.Id = id;
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult NewsDetail(string id)
         {
             return new JsonResult
@@ -34,6 +36,7 @@ namespace Yang.Management.Controllers
             
         }
 
+        [LoginCheckJson]
         [HttpGet]
         // GET: News
         public JsonResult GetIndexNews(string type)
@@ -46,6 +49,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetNewsList(int pageSize, int pageIndex, string key)
         {
             int temp = (pageIndex - 1) * pageSize;
@@ -71,6 +75,7 @@ namespace Yang.Management.Controllers
         }
 
         [HttpGet]
+        [LoginCheckJson]
         public JsonResult GetNews(int pageSize, int pageIndex, string key)
         {
             ListEntity<NewsEntity> listData = this.iNewsRepository.GetList(key, pageIndex, pageSize);
@@ -81,6 +86,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         [HttpGet]
         public JsonResult GetNewsByType(int pageSize, int pageIndex, string type)
         {
@@ -92,11 +98,13 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Create()
         {
             return View();
         }
 
+        [LoginCheckJson]
         [ValidateInput(false)]
         [HttpPost]
         public JsonResult Create(News entity)
@@ -111,12 +119,14 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Edit(string id)
         {
             ViewBag.id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [ValidateInput(false)]
         [HttpPost]
         public JsonResult Edit(News entity)
@@ -131,6 +141,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult DeleteNews(string id)
         {
             string[] ids = id.Split(',');
@@ -151,6 +162,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetNewsDetail(string id)
         {
             return new JsonResult
@@ -160,6 +172,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();

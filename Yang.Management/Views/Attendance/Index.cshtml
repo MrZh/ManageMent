@@ -173,6 +173,15 @@
             return false;
         });
 
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
+
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
+
         $.get("/UserManage/GetAllUserList", function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             $("#user-tmpl").tmpl(result.Data).appendTo("#user-data");

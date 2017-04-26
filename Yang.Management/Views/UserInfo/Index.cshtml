@@ -35,20 +35,20 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">姓名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="Name" id="Name" readonly="readonly" lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input">
+                    <input type="text" name="Name" id="Name" disabled lay-verify="title" autocomplete="off" placeholder="请输入姓名" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">登录名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="LoginName" readonly="readonly" id="LoginName" lay-verify="title|loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
+                    <input type="text" name="LoginName" disabled  id="LoginName" lay-verify="title|loginName" autocomplete="off" placeholder="请输入登录名" class="layui-input">
                 </div>
             </div>
 
             <div class="layui-form-item">
                 <label class="layui-form-label">身份证</label>
                 <div class="layui-input-block">
-                    <input type="text" name="IdentificationCard" readonly="readonly" id="IdentificationCard" lay-verify="identity" autocomplete="off" placeholder="请输入身份证" class="layui-input">
+                    <input type="text" name="IdentificationCard" disabled  id="IdentificationCard" lay-verify="identity" autocomplete="off" placeholder="请输入身份证" class="layui-input">
                 </div>
             </div>
 
@@ -61,13 +61,13 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">入职时间</label>
                 <div class="layui-input-block">
-                    <input type="text" name="EntryTime" id="EntryTime" readonly="readonly" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
+                    <input type="text" name="EntryTime" id="EntryTime" disabled readonly="readonly" lay-verify="date" placeholder="yyyy-mm-dd" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this})">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">入职部门</label>
+                <label class="layui-form-label">所在部门</label>
                 <div class="layui-input-block">
-                    <select name="DepartmentId" id="department-data" readonly="readonly" lay-filter="aihao">
+                    <select name="DepartmentId" id="department-data" disabled lay-filter="aihao">
                         <option value="null">-- --</option>
                     </select>
                 </div>
@@ -75,7 +75,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">性别</label>
                 <div class="layui-input-block">
-                    <select name="Sex" id="Sex" readonly="readonly" lay-filter="aihao">
+                    <select name="Sex" id="Sex" readonly="readonly" disabled lay-filter="aihao">
                         <option value="0">女</option>
                         <option value="1" selected="selected">男</option>
                     </select>
@@ -84,7 +84,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">结婚状况</label>
                 <div class="layui-input-block">
-                    <select name="IsMarried" id="IsMarried" lay-filter="aihao">
+                    <select name="IsMarried" id="IsMarried" disabled lay-filter="aihao">
                         <option value="0">未婚</option>
                         <option value="1" selected="selected">已婚</option>
                     </select>
@@ -93,7 +93,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">职务</label>
                 <div class="layui-input-block">
-                    <select name="Resign" readonly="readonly" lay-filter="aihao" id="resign-data">
+                    <select name="Resign" readonly="readonly" disabled lay-filter="aihao" id="resign-data">
                         <option value="0">-- --</option>
                     </select>
                 </div>
@@ -152,7 +152,14 @@
                 console.log(result);
                 return false;
             });
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
 
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             $.get("/Resign/GetAllResign", { type: "type" }, function (result) {
                 $("#department-tmpl").tmpl(result.Data).appendTo("#resign-data");
                 form.render();

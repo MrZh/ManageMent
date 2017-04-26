@@ -79,6 +79,14 @@
                     }
                 }
             });
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
+
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             //监听提交
             form.on('submit(demo1)', function (data) {
                 $.post("/Resign/Create", data.field, function (result) {

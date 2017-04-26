@@ -17,16 +17,19 @@ namespace Yang.Management.Controllers
 
         public IDepartmentRepository iDepartmentRepository = new DepartmentRepository();
         // GET: Department
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();
         }
 
+        [LoginCheck]
         public ActionResult Create()
         {
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult Create(Department entity)
         {
@@ -43,12 +46,14 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Edit(string id)
         {
             ViewBag.id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult Edit(Department entity)
         {
@@ -65,6 +70,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult DeleteDepartments(string id)
         {
             string[] ids = id.Split(',');
@@ -85,6 +91,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetDepartments(string key, int pageIndex, int pageSize)
         {
             return new JsonResult
@@ -94,6 +101,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetDepartment(string id)
         {
             return new JsonResult
@@ -103,6 +111,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetAllDepartment()
         {
             return new JsonResult

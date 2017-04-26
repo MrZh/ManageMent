@@ -158,7 +158,14 @@
                 console.log(result);
                 return false;
             });
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
 
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             $.get("/Resign/GetAllResign", { type: "type" }, function (result) {
                 $("#department-tmpl").tmpl(result.Data).appendTo("#resign-data");
                 form.render();

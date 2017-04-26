@@ -6,18 +6,21 @@ using System.Web.Mvc;
 
 namespace Yang.Management.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();
         }
 
+        [LoginCheck]
         public ActionResult News()
         {
             return View();
         }
 
+        [LoginCheck]
         public ActionResult NormalNews()
         {
             return View();

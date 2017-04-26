@@ -15,7 +15,7 @@ namespace Yang.Management.Entity.ViewEntity
         public string UserId { get; set; }
         public string CreateUserId { get; set; }
 
-        public DateTime CreateTime { get; set; }
+        public string CreateTime { get; set; }
 
         public decimal SalaryModify { get; set; }
 

@@ -92,6 +92,14 @@
             //    return false;
             //});
 
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
+
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             $.get("/News/GetNewsDetail", { id: '@ViewBag.id' }, function (result) {
 
                 $("#Title").val(result.Data.Title);

@@ -110,6 +110,15 @@
                     }
                 }
             });
+
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
+
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             //监听提交
             form.on('submit(demo2)', function (data) {
                 console.log(data.field);

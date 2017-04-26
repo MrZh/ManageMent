@@ -17,6 +17,10 @@ namespace Yang.Management.Repository
 
         void DeleteUsers(string[] id);
 
+        void UpdateUsers(string[] id, int status);
+
+        void UpdateUsersPassword(string[] id);
+
         ListEntity<ListUserEntity> GetListByKey(string key, int pageIndex,int pageSize);
 
         bool IsExist(string name);

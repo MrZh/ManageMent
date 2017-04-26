@@ -31,135 +31,63 @@
 
     <div class="layui-site-content ">
         <h1 class="layui-colla-title title-from">人员调整</h1>
-        <div class="layui-tab">
-            <ul class="layui-tab-title">
-                <li class="layui-this">人员调整</li>
-                <li>调整记录</li>
-            </ul>
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
+        <div class="layui-tab-item layui-show">
 
-                    <form class="layui-form form-them" action="">
-                        <input type="hidden" value="@ViewBag.Id" name="UserId" />
-                        
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整人员</label>
-                            <div class="layui-input-block">
-                                <input type="text" name="Title" value="111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">原始部门</label>
-                            <div class="layui-input-block">
-                                <select name="OrginalDepartmentId" class="department-data" disabled id="news-type-data" lay-filter="aihao">
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整部门</label>
-                            <div class="layui-input-block">
-                                <select name="NowDepartmentId" class="department-data" id="department-data" lay-filter="aihao">
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">原始职位</label>
-                            <div class="layui-input-block">
-                                <select name="OriginalResign" class="resign-data" id="news-type-dat" lay-filter="aihao">
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">调整职位</label>
-                            <div class="layui-input-block">
-                                <select name="NowResign" class="resign-data" id="resign-data" lay-filter="aihao">
-                                    <option value="1">1</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <label class="layui-form-label">备注</label>
-                            <div class="layui-input-block">
-                                <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
-                            </div>
-                        </div>
-                        <div class="layui-form-item">
-                            <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
-                                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                            </div>
-                        </div>
-                    </form>
+            <form class="layui-form form-them" action="">
+                <input type="hidden" value="@ViewBag.Id" name="UserId" />
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label">调整人员</label>
+                    <div class="layui-input-block">
+                        <input type="text" name="Title" value="111111" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                    </div>
                 </div>
-                <div class="layui-tab-item">
-                    <fieldset class="layui-elem-field">
-                        <legend>离职记录</legend>
-                        <table class="layui-table">
-                            <colgroup>
-                                <col width="150">
-                                <col width="150">
-                                <col width="200">
-                                <col width="200">
-                                <col>
-                            </colgroup>
-                            <thead>
-                                <tr>
-                                    <th>新闻标题</th>
-                                    <th>新闻类别</th>
-                                    <th>发布时间</th>
-                                    <th>简介</th>
-                                    <th>简介</th>
-                                </tr>
-                            </thead>
-                            <tbody id="news-data">
-                                <tr>
-                                    <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
-                                    <td>贤心</td>
-                                    <td>汉族</td>
-                                    <td>1989-10-14</td>
-                                    <td>人生似修行</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
-                                    <td>张爱玲</td>
-                                    <td>汉族</td>
-                                    <td>1920-09-30</td>
-                                    <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
-                                    <td>Helen Keller</td>
-                                    <td>拉丁美裔</td>
-                                    <td>1880-06-27</td>
-                                    <td> Life is either a daring adventure or nothing.</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
-                                    <td>岳飞</td>
-                                    <td>汉族</td>
-                                    <td>1103-北宋崇宁二年</td>
-                                    <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
-                                    <td>孟子</td>
-                                    <td>华夏族（汉族）</td>
-                                    <td>公元前-372年</td>
-                                    <td>猿强，则国强。国强，则猿更强！ </td>
-                                </tr>
-                            </tbody>
-                        </table>
-
-                        <div id="demo1" class="page-box"></div>
-                    </fieldset>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">原始部门</label>
+                    <div class="layui-input-block">
+                        <select name="OrginalDepartmentId" class="department-data" disabled id="news-type-data" lay-filter="aihao">
+                            <option value="1">1</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
+                <div class="layui-form-item">
+                    <label class="layui-form-label">调整部门</label>
+                    <div class="layui-input-block">
+                        <select name="NowDepartmentId" class="department-data" id="department-data" lay-filter="aihao">
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">原始职位</label>
+                    <div class="layui-input-block">
+                        <select name="OriginalResign" class="resign-data" disabled id="news-type-dat" lay-filter="aihao">
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">调整职位</label>
+                    <div class="layui-input-block">
+                        <select name="NowResign" class="resign-data" id="resign-data" lay-filter="aihao">
+                            <option value="1">1</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">备注</label>
+                    <div class="layui-input-block">
+                        <textarea id="Content" name="Content" style="width:400px;height:200px"></textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo2">立即提交</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    </div>
+                </div>
+            </form>
         </div>
-
     </div>
     <script src="~/Content/jquery-1.10.2.min.js"></script>
     <script src="~/Content/layui/layui.js"></script>
@@ -178,7 +106,14 @@
                 element = layui.element(),
                 laypage = layui.laypage,
                 laydate = layui.laydate;
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
 
+                $("#userinfo").text(result.Data.UserName);
+                return false;
+            });
             $.get("/Department/GetAllDepartment", { type: "type" }, function (result) {
                 $(".department-data").empty();
                 $("#department-tmpl").tmpl(result.Data).appendTo(".department-data");
@@ -204,7 +139,14 @@
             });
             //监听提交
             form.on('submit(demo2)', function (data) {
-                console.log(data.field);
+                $.post("/UserManage/UserModify", data.field, function (result) {
+                    if (result.Status == 200) {
+                        layer.msg("添加记录成功", function () {
+                            window.location.href = "/UserManage/Index";
+                        })
+                    }
+                });
+
                 return false;
             });
         });

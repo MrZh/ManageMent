@@ -49,8 +49,10 @@
             <button class="layui-btn" id="addBtn">新增人员</button>
             <button class="layui-btn" id="modifyBtn">修改人员</button>
             <button class="layui-btn" id="dismissBtn">员工离职</button>
-            <button class="layui-btn">人事变动</button>
-            <button class="layui-btn">员工转正</button>
+            <button class="layui-btn" id="userModify">人事变动</button>
+            <button class="layui-btn" id="salaryModify">薪资变动</button>
+            <button class="layui-btn" id="modifyStatus">员工转正</button>
+            <button class="layui-btn" id="modifyPassword">密码重置</button>
             <button class="layui-btn layui-btn-danger" id="delBtn">删除人员</button>
         </div>
         <div class="layui-form">
@@ -102,6 +104,14 @@
             element = layui.element(),
             laypage = layui.laypage;
         var keyword = "";
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
+
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
         $.get("/UserManage/GetUserList", {key:keyword, pageIndex: 1,pageSize:2}, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
@@ -232,6 +242,62 @@
                 console.log(id);
             })
 
+            $("#modifyPassword").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+
+                if (id.length < 1) {
+                    layer.msg("请选中要删除的职员");
+                    return false;
+                }
+
+
+
+                $.get("/UserManage/UpdateUsersPassword", { id: id.join(',') }, function (result) {
+                    if (result.Status == 200) {
+                        window.location.reload(true);
+                    } else {
+                        layer.msg(result.Message);
+                    }
+                    return false;
+                });
+                console.log(id);
+            })
+
+            $("#modifyStatus").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+
+                if (id.length < 1) {
+                    layer.msg("请选中要删除的职员");
+                    return false;
+                }
+
+
+
+                $.get("/UserManage/UpdateUsers", { id: id.join(',') }, function (result) {
+                    if (result.Status == 200) {
+                        window.location.reload(true);
+                    } else {
+                        layer.msg(result.Message);
+                    }
+                    return false;
+                });
+                console.log(id);
+            })
+
             $("#dismissBtn").click(function () {
                 var id = [];
                 $("input[type='checkbox']").each(function () {
@@ -253,6 +319,52 @@
 
                 console.log(id);
                 window.location.href = "/UserManage/Dismiss?id=" + id[0];
+            })
+
+            $("#salaryModify").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能操作一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要操作的职员");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/UserManage/UserSalaryModify?id=" + id[0];
+            })
+
+            $("#userModify").click(function () {
+                var id = [];
+                $("input[type='checkbox']").each(function () {
+                    if ($(this).is(":checked")) {
+                        if ($(this).val() != "on") {
+                            id.push($(this).val());
+                        }
+                    }
+                })
+                if (id.length > 1) {
+                    layer.msg("只能操作一个");
+                    return false;
+                }
+
+                if (id.length < 1) {
+                    layer.msg("请选中要操作的职员");
+                    return false;
+                }
+
+                console.log(id);
+                window.location.href = "/UserManage/UserModify?id=" + id[0];
             })
         })
     });

@@ -37,13 +37,13 @@ namespace Yang.Management.Repository.Repository
 
         public ListEntity<ListUserEntity> GetListByKey(string key, int pageIndex, int pageSize)
         {
-            int total = this.context.UserInfo.Where(c => c.Name.Contains(key)&&c.Status!=-1).Count();
+            int total = this.context.UserInfo.Where(c => c.Name.Contains(key) && c.Status != -1).Count();
             List<ListUserEntity> list = new List<ListUserEntity>();
             if (total <= 0)
             {
                 return new ListEntity<ListUserEntity>(list, 0, pageIndex, pageSize);
             }
-            List<string> ids = this.context.UserInfo.Where(c => c.Name.Contains(key)&& c.Status != -1).OrderBy(c => c.Id).Skip((pageIndex - 1) * pageSize).Select(c => c.Id).ToList();
+            List<string> ids = this.context.UserInfo.Where(c => c.Name.Contains(key) && c.Status != -1).OrderBy(c => c.Id).Skip((pageIndex - 1) * pageSize).Select(c => c.Id).ToList();
             BaseQuery query = new BaseQuery("SELECT us.id,us.Status ,de.Name as DepartmentName,us.CreateTime,res.Name as ResignName,us.Name FROM UserInfo as us LEFT JOIN Department as de on us.DepartmentId=de.Id LEFT JOIN Resign as res on us.Resign=res.Id where us.id in @ids", new { ids = ids });
 
             // BaseQuery query = new BaseQuery("select id from UserInfo where id in @ids", new { ids =ids });
@@ -90,7 +90,7 @@ namespace Yang.Management.Repository.Repository
                 userlogin.Id = Guid.NewGuid().ToString();
                 userlogin.Name = entity.LoginName;
                 userlogin.UserId = entity.Id;
-                userlogin.RealName = entity.Name;                
+                userlogin.RealName = entity.Name;
                 userlogin.PassWord = CommonEncrypt.Encrypt(entity.Password);
                 entity.Password = CommonEncrypt.Encrypt(entity.Password);
                 this.context.UserLogin.Add(userlogin);
@@ -129,6 +129,28 @@ namespace Yang.Management.Repository.Repository
             foreach (var item in users)
             {
                 item.Status = -1;
+            }
+
+            this.context.SaveChanges();
+        }
+
+        public void UpdateUsers(string[] id, int status)
+        {
+            var users = this.context.UserInfo.Where(c => id.Contains(c.Id)).ToList();
+            foreach (var item in users)
+            {
+                item.Status = status;
+            }
+
+            this.context.SaveChanges();
+        }
+
+        public void UpdateUsersPassword(string[] id)
+        {
+            var users = this.context.UserInfo.Where(c => id.Contains(c.Id)).ToList();
+            foreach (var item in users)
+            {
+                item.Password = CommonEncrypt.Encrypt("123456");
             }
 
             this.context.SaveChanges();

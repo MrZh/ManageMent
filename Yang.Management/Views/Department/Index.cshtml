@@ -146,6 +146,15 @@
             return false;
         });
 
+        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+            if (result.Status == 125) {
+                location.href = "/Login/Index";
+            }
+
+            $("#userinfo").text(result.Data.UserName);
+            return false;
+        });
+
         var getPage = function (obj) {
             $.get("/Department/GetDepartments", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
                 render(result.Data.Entity);

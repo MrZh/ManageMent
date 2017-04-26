@@ -16,17 +16,19 @@ namespace Yang.Management.Controllers
     {
         public IResignRepository iResignRepository = new ResignRepository();
         // GET: Resign
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();
         }
 
-
+        [LoginCheck]
         public ActionResult Create()
         {
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult Create(Resign entity)
         {
@@ -39,12 +41,14 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Edit(string id)
         {
             ViewBag.id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult Edit(Resign entity)
         {
@@ -57,6 +61,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult DeleteResigns(string id)
         {
             string[] ids = id.Split(',');
@@ -77,6 +82,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetResigns(string key, int pageIndex, int pageSize)
         {
             return new JsonResult
@@ -86,6 +92,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetResign(string id)
         {
             return new JsonResult
@@ -95,6 +102,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetAllResign()
         {
             return new JsonResult

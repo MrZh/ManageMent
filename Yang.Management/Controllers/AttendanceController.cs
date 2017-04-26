@@ -13,11 +13,13 @@ namespace Yang.Management.Controllers
     {
         IAttendanceLogRepository iAttendanceLogRepository = new AttendanceLogRepository();
         // GET: Attendance
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult GetListByUserId(string userId, string year, string month, int pageIndex, int pageSize)
         {
             if (userId == "null")

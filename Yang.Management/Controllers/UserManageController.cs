@@ -20,19 +20,22 @@ namespace Yang.Management.Controllers
         public IUserModifyLogRepository iUserModifyLogRepository = new UserModifyLogRepository();
         public ISalaryModifyLogRepository iSalaryModifyLogRepository = new SalaryModifyLogRepository();
 
+        [LoginCheck]
         // GET: UserManage
         public ActionResult Index()
         {
             return View();
         }
 
+        [LoginCheck]
         public ActionResult Create()
         {
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
-        public ActionResult Create(UserInfo entity)
+        public JsonResult Create(UserInfo entity)
         {
 
             entity.Password = "123456";
@@ -46,14 +49,16 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Edit(string id)
         {
             ViewBag.Id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
-        public ActionResult Edit(UserInfo entity)
+        public JsonResult Edit(UserInfo entity)
         {
             iUserInfoRepository.Save(entity);
             return new JsonResult
@@ -63,11 +68,13 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult DimissRecord()
         {
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult GetDimissListByUserId(string userId, int pageIndex, int pageSize)
         {
             if (userId == "null")
@@ -83,6 +90,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult Dismiss(String id)
         {
             ViewBag.Id = id;
@@ -95,6 +103,7 @@ namespace Yang.Management.Controllers
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult Dismiss(DimissionRecord entity)
         {
@@ -115,18 +124,21 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult ChangePassword()
         {
             ViewBag.Id = CurrentUserId;
             return View();
         }
 
+        [LoginCheck]
         public ActionResult UserModify(String id)
         {
             ViewBag.Id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult UserModify(UserModifyLog entity)
         {
@@ -144,11 +156,13 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult UserModifyRecord()
         {
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult GetModifyListByUserId(string userId, int pageIndex, int pageSize)
         {
             if (userId == "null")
@@ -164,12 +178,14 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult UserSalaryModify(string id)
         {
             ViewBag.Id = id;
             return View();
         }
 
+        [LoginCheckJson]
         [HttpPost]
         public JsonResult UserSalaryModify(SalaryModifyLog entity)
         {
@@ -186,11 +202,13 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheck]
         public ActionResult UserSalaryModifyRecord()
         {
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult GetSalaryModifyListByUserId(string userId, int pageIndex, int pageSize)
         {
             if (userId == "null")
@@ -206,6 +224,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public ActionResult IsExist(string name)
         {
             int status = 200;
@@ -221,6 +240,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetUserById(string id)
         {
             var user = iUserInfoRepository.GetUserById(id);
@@ -258,6 +278,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult DeleteUsers(string id)
         {
             string[] ids = id.Split(',');
@@ -279,6 +300,51 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
+        public JsonResult UpdateUsers(string id)
+        {
+            string[] ids = id.Split(',');
+            int result = 1;
+            this.iUserInfoRepository.UpdateUsers(ids,1);
+            if (result == 1)
+            {
+                return new JsonResult
+                {
+                    Data = new Result(null),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
+            return new JsonResult
+            {
+                Data = new Result(511, null, "该职务下有人"),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        [LoginCheckJson]
+        public JsonResult UpdateUsersPassword(string id)
+        {
+            string[] ids = id.Split(',');
+            int result = 1;
+            this.iUserInfoRepository.UpdateUsersPassword(ids);
+            if (result == 1)
+            {
+                return new JsonResult
+                {
+                    Data = new Result(null),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+
+            return new JsonResult
+            {
+                Data = new Result(511, null, "该职务下有人"),
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
+
+        [LoginCheckJson]
         public JsonResult GetUserList(string key, int pageSize,int pageIndex)
         {
             ListEntity<ListUserEntity> list = this.iUserInfoRepository.GetListByKey(key, pageIndex, pageSize);
@@ -290,6 +356,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetAllUserList()
         {
             List<ListUserEntity> list = this.iUserInfoRepository.GetAllList();

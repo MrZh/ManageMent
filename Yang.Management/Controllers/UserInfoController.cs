@@ -17,18 +17,21 @@ namespace Yang.Management.Controllers
         IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
         IUserLoginRepository iUserLoginRepository = new UserLoginRepository();
         // GET: UserInfo
+        [LoginCheck]
         public ActionResult Index()
         {
             ViewBag.Id = CurrentUserId;
             return View();
         }
 
+        [LoginCheck]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
         [HttpPost]
+        [LoginCheckJson]
         public ActionResult Edit(UserInfo entity)
         {
             iUserInfoRepository.Save(entity);
@@ -40,6 +43,7 @@ namespace Yang.Management.Controllers
         }
 
         [HttpPost]
+        [LoginCheckJson]
         public JsonResult ChangePassword(string OldPassword, string NewPassword, string ConfirmPassword)
         {            
             int status = 200;
@@ -63,7 +67,7 @@ namespace Yang.Management.Controllers
                 message = "重新登录";
 
             }
-            if (user.PassWord.Equals(CommonEncrypt.Encrypt(NewPassword)))
+            if (user.PassWord.Equals(CommonEncrypt.Encrypt(OldPassword)))
             {
                 status = 511;
                 message = "旧密码不正确";
@@ -77,6 +81,7 @@ namespace Yang.Management.Controllers
             };
         }
 
+        [LoginCheckJson]
         public JsonResult GetUserById(string id)
         {
             var user = iUserInfoRepository.GetUserById(id);

@@ -18,11 +18,13 @@ namespace Yang.Management.Controllers
         IAttendanceLogRepository iAttendanceLogRepository = new AttendanceLogRepository();
         IUserInfoRepository iUserInfoRepository = new UserInfoRepository();
         // GET: MyAttendance
+        [LoginCheck]
         public ActionResult Index()
         {
             return View();
         }
 
+        [LoginCheckJson]
         public JsonResult GetCurrentUserInfo()
         {
             var user = iUserInfoRepository.GetUserById(this.CurrentUserId);
@@ -47,6 +49,7 @@ namespace Yang.Management.Controllers
         /// 515：已签退 514：已签到无签退 513;未签到
         /// </summary>
         /// <returns></returns>
+        [LoginCheckJson]
         public JsonResult IsAttendance()
         {
             int status = this.iAttendanceLogRepository.IsAttendance(this.CurrentUserId, DateTime.Now);
@@ -61,6 +64,7 @@ namespace Yang.Management.Controllers
 
         }
 
+        [LoginCheckJson]
         public JsonResult GetMyAttendanceList(string year, string month, int pageIndex, int pageSize)
         {
             if (year == "null")
@@ -84,6 +88,7 @@ namespace Yang.Management.Controllers
         /// 
         /// </summary>
         /// <returns></returns>
+        [LoginCheckJson]
         public JsonResult Attendance()
         {
             var result = this.iAttendanceLogRepository.GetAttendance(this.CurrentUserId, DateTime.Now);
