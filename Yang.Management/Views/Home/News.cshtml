@@ -1,6 +1,14 @@
 ﻿
 @{
     Layout = null;
+    bool isAdmin = false;
+    if (Session["CurrentUserType"] != null)
+    {
+        if (Session["CurrentUserType"].ToString() == "1")
+        {
+            isAdmin = true;
+        }
+    }
 }
 
 <!DOCTYPE html>
