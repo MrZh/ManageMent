@@ -73,7 +73,10 @@ namespace Yang.Management.Controllers
                 message = "旧密码不正确";
             }
             user.PassWord = CommonEncrypt.Encrypt(NewPassword);
-            iUserLoginRepository.Save(user);
+            if (status == 200)
+            {
+                iUserLoginRepository.Save(user);
+            }
             return new JsonResult
             {
                 Data = new Result(status, null, message),

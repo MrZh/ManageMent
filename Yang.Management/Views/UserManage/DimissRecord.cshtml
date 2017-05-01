@@ -28,16 +28,22 @@
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
         <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
-        <li class="layui-nav-item layui-this"><a href="/Attendance/Index">考勤管理</a></li>
-        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
-        <li class="layui-nav-item"><a href="">个人信息</a></li>
-        <li class="layui-nav-item"><a href="">密码修改</a></li>
+        @if (isAdmin)
+        {
+            <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+            <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+            <li class="layui-nav-item layui-this"><a href="/UserManage/DimissRecord">离职登记记录</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        }
+        <li class="layui-nav-item "><a href="/UserInfo/Index">个人信息</a></li>
+        <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">考勤管理</h1>
+        <h1 class="layui-colla-title title-from">离职登记记录</h1>
         <div class="layui-clear search-box">
             <div class="site-left">
                 <div class="site-content">
@@ -72,7 +78,6 @@
                     <col width="150">
                     <col width="150">
                     <col width="200">
-                    <col width="150">
                     <col width="200">
                     <col>
                 </colgroup>
@@ -80,11 +85,10 @@
                     <tr>
                         <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
                         <th>姓名</th>
-                        <th>年份/月份</th>
-                        <th>是否迟到</th>
-                        <th>签到时间</th>
-                        <th>是否早退</th>
-                        <th>签退时间</th>
+                        <th>部门</th>
+                        <th>申请时间</th>
+                        <th>离职时间</th>
+                        <th>备注</th>
                     </tr>
                 </thead>
                 <tbody id="attendance-data"></tbody>
@@ -99,11 +103,10 @@
         <tr>
             <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
             <td>${UserName}</td>
-            <td>${AttendanceMonth}/${AttendanceYear}</td>
-            <td>{{if AttendanceType=="0"}} 迟到 {{/if}}{{if AttendanceType=="1"}}正常 {{/if}}</td>
-            <td>${AttendanceTime}</td>
-            <td>{{if LogoutType=="0"}} 早退 {{/if}}{{if LogoutType=="1"}}正常 {{/if}}</td>
-            <td>${LogoutTime}</td>
+            <td>${DepartmentName}</td>
+            <td>${ApplyTime}</td>
+            <td>${DimissionTime}</td>
+            <td>${Content}</td>
         </tr>
     </script>
     <script type="text/x-jquery-tmpl" id="user-tmpl">
@@ -164,8 +167,8 @@
         }
 
         var render = function (data) {
-            //$("#attendance-data").empty();
-            //$("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
+            $("#attendance-data").empty();
+            $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
 
         }
 

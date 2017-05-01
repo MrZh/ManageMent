@@ -28,13 +28,18 @@
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
         <li class="layui-nav-item layui-this"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
-        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
-        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
-        <li class="layui-nav-item"><a href="">个人信息</a></li>
-        <li class="layui-nav-item"><a href="">密码修改</a></li>
+        @if (isAdmin)
+        {
+            <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+            <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        }
+        <li class="layui-nav-item "><a href="/UserInfo/Index">个人信息</a></li>
+        <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
         <div class="layui-clear">
@@ -51,7 +56,7 @@
                         </li>
                         <li class="news">
                             <fieldset class="layui-elem-field">
-                                <legend>新闻消息</legend>
+                                <legend>消息通知</legend>
                                 <ol class="layui-field-box news-item" id="normal-news-data">                                  
                                 </ol>
                                 <a class="more" href="/Home/NormalNews">更多...</a>
@@ -139,6 +144,11 @@
 
         $("#login").click(function () {
             $.get("/MyAttendance/Attendance", function (result) {
+                if (result.Status == 200) {
+                    layer.msg(result.Message, function () {
+
+                    })
+                }
                 console.log(result.Data);
                 form.render();
                 return false;

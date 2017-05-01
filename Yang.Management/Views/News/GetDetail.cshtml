@@ -26,15 +26,20 @@
     </div>
     <ul class="layui-nav layui-nav-side layui-nav-tree" lay-filter="test">
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
-        <li class="layui-nav-item layui-this"><a href="/Home/Index">我的主页</a></li>
+        <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
-        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
-        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
-        <li class="layui-nav-item"><a href="">个人信息</a></li>
-        <li class="layui-nav-item"><a href="">密码修改</a></li>
+        @if (isAdmin)
+        {
+            <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+            <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item layui-this"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        }
+        <li class="layui-nav-item "><a href="/UserInfo/Index">个人信息</a></li>
+        <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
         <div class="layui-clear">
@@ -47,30 +52,7 @@
                         </div>
                     </div>
                     <div class="content" id="Contents">
-                        <p>
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤。
-                        </p>
-                        <p>
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤。
-                        </p>
-                        <p>
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤，
-                            接口的撒哈拉疯狂的吉萨弗兰克的合法会计师的分开就爱上的回复开始骄傲的回复了扩大是姐夫好卡了圣诞节后付款ASD
-                            ASDFASKDJHFKLAJSDHFLKASJDF接口的撒谎法律会计师的复活卡拉斯加的恢复卡时间段恢复了。阿斯达克好伐啦深刻的姐夫了卡斯的肌肤。
-                        </p>
+                        
                     </div>
                 </div>      
             </div>

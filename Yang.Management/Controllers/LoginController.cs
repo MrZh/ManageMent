@@ -47,6 +47,17 @@ namespace Yang.Management.Controllers
                         Session["CurrentUserType"] = "1";
                     }
                 }
+                if (user != null)
+                {
+                    if (user.Status != 0 || user.Status != 1) {
+                        return new JsonResult
+                        {
+                            Data = new Result(500, null, ""),
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                }
+
                 result = 200;
             }
 

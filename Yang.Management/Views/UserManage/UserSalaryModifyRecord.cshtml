@@ -28,13 +28,16 @@
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
         <li class="layui-nav-item"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
-        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
-        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
-        <li class="layui-nav-item layui-this"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        @if (isAdmin)
+        {
+            <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+            <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
+            <li class="layui-nav-item layui-this"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        }
         <li class="layui-nav-item "><a href="/UserInfo/Index">个人信息</a></li>
         <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
@@ -81,10 +84,10 @@
                     <tr>
                         <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
                         <th>姓名</th>
-                        <th>年份/月份</th>
-                        <th>是否迟到</th>
-                        <th>签到时间</th>
-                        <th>签退时间</th>
+                        <th>登记时间</th>
+                        <th>原薪资</th>
+                        <th>现薪资</th>
+                        <th>备注</th>
                     </tr>
                 </thead>
                 <tbody id="attendance-data"></tbody>
@@ -110,68 +113,29 @@
     </script>
     <script>
 
-    //一般直接写在一个js文件中
-    layui.use(['jquery','layer', 'form', 'element','laypage'], function () {
-        var $ = layui.jquery,
-            layer = layui.layer,
-            form = layui.form(),
-            element = layui.element(),
-            laypage = layui.laypage;
+        //一般直接写在一个js文件中
+        layui.use(['jquery', 'layer', 'form', 'element', 'laypage'], function () {
+            var $ = layui.jquery,
+                layer = layui.layer,
+                form = layui.form(),
+                element = layui.element(),
+                laypage = layui.laypage;
 
-        var userId = "";
+            var userId = "";
 
-        $(".logout").on("click", function () {
-            location.href = "/Login/Logout"
-        });
-
-        $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
-            if (result.Status == 125) {
-                location.href = "/Login/Index";
-            }
-
-            $("#userinfo").text(result.Data.UserName);
-            return false;
-        });
-
-        $.get("/UserManage/GetSalaryModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
-            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-            laypage({
-                cont: 'demo1'
-                , pages: result.Data.TotalPage //总页数
-                , groups: 5 //
-                , jump: function (result) {
-                    getPage(result);
-                }
+            $(".logout").on("click", function () {
+                location.href = "/Login/Logout"
             });
-            form.render();
-            return false;
-        });
 
-        $.get("/UserManage/GetAllUserList", function (result) {
-            //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-            $("#user-tmpl").tmpl(result.Data).appendTo("#user-data");
-            form.render();
-            return false;
-        });
+            $.get("/MyAttendance/GetCurrentUserInfo", function (result) {
+                if (result.Status == 125) {
+                    location.href = "/Login/Index";
+                }
 
-        var getPage = function (obj) {
-            $.get("/UserManage/GetSalaryModifyListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 2 }, function (result) {
-                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
-                render(result.Data.Entity);
-                console.log(result.Data);
-                form.render();
+                $("#userinfo").text(result.Data.UserName);
                 return false;
             });
-        }
 
-        var render = function (data) {
-            $("#attendance-data").empty();
-            $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
-
-        }
-
-        var search = function () {
-            userId = $("#user-data").val();
             $.get("/UserManage/GetSalaryModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
@@ -182,33 +146,72 @@
                         getPage(result);
                     }
                 });
-                render(result.Data.Entity);
                 form.render();
                 return false;
             });
-        }
-         //全选
-        form.on('checkbox(allChoose)', function(data){
-            var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
-            child.each(function(index, item){
-            item.checked = data.elem.checked;
-            });
-            form.render('checkbox');
-        });
-        $(function(){
-            $('#add').click(function () {
-                $("input[type='checkbox']").each(function () {
-                    if ($(this).is(":checked")) {
-                        console.log($(this).val());
-                    }
-                })
-            });
-            $("#searchBtn").click(function () {
-                search();
+
+            $.get("/UserManage/GetAllUserList", function (result) {
+                //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                $("#user-tmpl").tmpl(result.Data).appendTo("#user-data");
+                form.render();
+                return false;
             });
 
-        })
-    });
+            var getPage = function (obj) {
+                $.get("/UserManage/GetSalaryModifyListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+                    //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                    render(result.Data.Entity);
+                    console.log(result.Data);
+                    form.render();
+                    return false;
+                });
+            }
+
+            var render = function (data) {
+                $("#attendance-data").empty();
+                $("#attendance-tmpl").tmpl(data).appendTo("#attendance-data");
+
+            }
+
+            var search = function () {
+                userId = $("#user-data").val();
+                $.get("/UserManage/GetSalaryModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
+                    //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
+                    laypage({
+                        cont: 'demo1'
+                        , pages: result.Data.TotalPage //总页数
+                        , groups: 5 //
+                        , jump: function (result) {
+                            getPage(result);
+                        }
+                    });
+                    render(result.Data.Entity);
+                    form.render();
+                    return false;
+                });
+            }
+            //全选
+            form.on('checkbox(allChoose)', function (data) {
+                var child = $(data.elem).parents('table').find('tbody input[type="checkbox"]');
+                child.each(function (index, item) {
+                    item.checked = data.elem.checked;
+                });
+                form.render('checkbox');
+            });
+            $(function () {
+                $('#add').click(function () {
+                    $("input[type='checkbox']").each(function () {
+                        if ($(this).is(":checked")) {
+                            console.log($(this).val());
+                        }
+                    })
+                });
+                $("#searchBtn").click(function () {
+                    search();
+                });
+
+            })
+        });
     </script>
 </body>
 </html>

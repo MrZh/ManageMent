@@ -135,6 +135,12 @@ namespace Yang.Management.Controllers
         public ActionResult UserModify(String id)
         {
             ViewBag.Id = id;
+            var user = iUserInfoRepository.GetUserById(id);
+            if (user != null)
+            {
+                ViewBag.Name = user.Name;
+                ViewBag.DepartmentId = user.DepartmentId;
+            }
             return View();
         }
 
@@ -182,6 +188,12 @@ namespace Yang.Management.Controllers
         public ActionResult UserSalaryModify(string id)
         {
             ViewBag.Id = id;
+            var user = iUserInfoRepository.GetUserById(id);
+            if (user != null)
+            {
+                ViewBag.Name = user.Name;
+                ViewBag.DepartmentId = user.DepartmentId;
+            }
             return View();
         }
 

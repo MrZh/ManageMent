@@ -28,13 +28,18 @@
         <!-- 侧边导航: <ul class="layui-nav layui-nav-tree layui-nav-side"> -->
         <li class="layui-nav-item layui-this"><a href="/Home/Index">我的主页</a></li>
         <li class="layui-nav-item"><a href="/MyAttendance/Index">我的考勤</a></li>
-        <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
-        <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-        <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-        <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
-        <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
-        <li class="layui-nav-item"><a href="">个人信息</a></li>
-        <li class="layui-nav-item"><a href="">密码修改</a></li>
+        @if (isAdmin)
+        {
+            <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
+            <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
+            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
+            <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
+        }
+        <li class="layui-nav-item "><a href="/UserInfo/Index">个人信息</a></li>
+        <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
         <div class="layui-clear">
@@ -58,41 +63,6 @@
                                 </tr>
                             </thead>
                             <tbody id="news-data">
-                                <tr>
-                                    <td><input type="checkbox" name="" value="a" lay-skin="primary"></td>
-                                    <td>贤心</td>
-                                    <td>汉族</td>
-                                    <td>1989-10-14</td>
-                                    <td>人生似修行</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="b" lay-skin="primary"></td>
-                                    <td>张爱玲</td>
-                                    <td>汉族</td>
-                                    <td>1920-09-30</td>
-                                    <td>于千万人之中遇见你所遇见的人，于千万年之中，时间的无涯的荒野里…</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="c" lay-skin="primary"></td>
-                                    <td>Helen Keller</td>
-                                    <td>拉丁美裔</td>
-                                    <td>1880-06-27</td>
-                                    <td> Life is either a daring adventure or nothing.</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="d" lay-skin="primary"></td>
-                                    <td>岳飞</td>
-                                    <td>汉族</td>
-                                    <td>1103-北宋崇宁二年</td>
-                                    <td>教科书再滥改，也抹不去“民族英雄”的事实</td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="" value="e" lay-skin="primary"></td>
-                                    <td>孟子</td>
-                                    <td>华夏族（汉族）</td>
-                                    <td>公元前-372年</td>
-                                    <td>猿强，则国强。国强，则猿更强！ </td>
-                                </tr>
                             </tbody>
                         </table>
 
@@ -110,8 +80,8 @@
     <script src="~/Content/jquery.tmpl.min.js"></script>
     <script type="text/x-jquery-tmpl" id="news-tmpl">
         <tr>
-            <td>${Title}</td>
-            <td>新闻消息</td>
+            <td><a href="/News/GetDetail?id=${Id}">${Title}</a></td>
+            <td>消息通知</td>
             <td>${CreateTime}</td>
             <td>${Description}</td>
         </tr>
