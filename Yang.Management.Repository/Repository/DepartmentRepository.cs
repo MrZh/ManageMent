@@ -19,7 +19,6 @@ namespace Yang.Management.Repository.Repository
 
         public int Delete(string[] ids)
         {
-            //bool isHas=  this.context.Department.Any(c => ids.Contains(c.ParentDepartmentId));
             int users = this.context.UserInfo.Where(c => ids.Contains(c.DepartmentId)).Count();
             int department = this.context.Department.Where(c => ids.Contains(c.ParentDepartmentId)).Count();
            

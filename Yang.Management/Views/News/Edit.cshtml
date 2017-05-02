@@ -33,7 +33,7 @@
             <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
             <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
             <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-            <li class="layui-nav-item layui-this"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item layui-this"><a href="/News/Index">公告管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
             <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
@@ -42,17 +42,17 @@
         <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新增新闻</h1>
+        <h1 class="layui-colla-title title-from">修改公告</h1>
         <form class="layui-form form-them" action="">
             <input type="hidden" name="Id" value="@ViewBag.Id" />
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻标题</label>
+                <label class="layui-form-label">公告标题</label>
                 <div class="layui-input-block">
                     <input type="text" name="Title" id="Title" lay-verify="title" autocomplete="off" placeholder="请输入职务名称" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻类别</label>
+                <label class="layui-form-label">公告类别</label>
                 <div class="layui-input-block">
                     <select name="NewsTypeId" id="news-type-data" lay-filter="aihao">
                         <option value="0" selected="selected">消息通知</option>
@@ -62,7 +62,7 @@
             </div>
 
             <div class="layui-form-item">
-                <label class="layui-form-label">新闻内容</label>
+                <label class="layui-form-label">公告内容</label>
                 <div class="layui-input-block">
                     <textarea id="Content" name="Contents" style="display: none;"></textarea>
                 </div>
@@ -138,7 +138,7 @@
                 console.log(data.field);
                 $.post("/News/Edit", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加新闻成功", function () {
+                        layer.msg("添加公告成功", function () {
                             window.location.href = "/News/Index";
                         })
                     }

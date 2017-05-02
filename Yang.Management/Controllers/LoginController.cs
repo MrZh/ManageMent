@@ -49,7 +49,7 @@ namespace Yang.Management.Controllers
                 }
                 if (user != null)
                 {
-                    if (user.Status != 0 || user.Status != 1) {
+                    if (user.Status != 1) {
                         return new JsonResult
                         {
                             Data = new Result(500, null, ""),

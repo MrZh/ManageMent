@@ -32,7 +32,7 @@
             <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
             <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
             <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-            <li class="layui-nav-item layui-this"><a href="/News/Index">新闻管理</a></li>
+            <li class="layui-nav-item layui-this"><a href="/News/Index">公告管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
             <li class="layui-nav-item"><a href="/UserManage/UserSalaryModifyRecord">薪资调整记录</a></li>
@@ -41,7 +41,7 @@
         <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">新闻管理</h1>
+        <h1 class="layui-colla-title title-from">公告管理</h1>
         <div class="layui-clear search-box">
             <div class="site-left">
                 <div class="site-content">
@@ -74,9 +74,9 @@
                 <thead>
                     <tr>
                         <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
-                        <th>新闻标题</th>
-                        <th>新闻类别</th>
-                        <th>发布时间</th>
+                        <th>公告标题</th>
+                        <th>公告类别</th>
+                        <th>公告时间</th>
                         <th>简介</th>
                     </tr>
                 </thead>
@@ -120,7 +120,7 @@
             $("#userinfo").text(result.Data.UserName);
             return false;
         });
-        $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 4 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -136,7 +136,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNews", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+            $.get("/News/GetNews", { key: keyword, pageIndex: obj.curr, pageSize: 4 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                // console.log(result.data);
@@ -148,7 +148,7 @@
 
         var search = function () {
             keyword = $("#key").val();
-            $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+            $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 4 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'
