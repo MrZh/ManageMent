@@ -119,7 +119,7 @@
             form.on('submit(demo1)', function (data) {
                 $.post("/Resign/Edit", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加职务成功", function () {
+                        layer.msg("修改职务成功", function () {
                             window.location.href = "/Resign/Index";
                         })
                     }

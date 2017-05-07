@@ -219,7 +219,7 @@
             form.on('submit(demo1)', function (data) {
                 $.post("/UserInfo/Edit", data.field, function (result) {
                     if (result.Status == 200) {
-                        layer.msg("添加人员成功", function () {
+                        layer.msg("修改成功", function () {
                             window.location.href = "/UserManage/Index";
                         })
                     }
