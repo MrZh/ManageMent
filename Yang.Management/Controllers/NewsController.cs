@@ -111,6 +111,7 @@ namespace Yang.Management.Controllers
         {
             entity.CreateTime = DateTime.Now;
             entity.Description = CutString.CutWithOutHtml(entity.Contents, 200);
+            entity.CreateUserId = CurrentUserId;
             this.iNewsRepository.Save(entity);
 
             return new JsonResult
@@ -133,6 +134,7 @@ namespace Yang.Management.Controllers
         {
             entity.CreateTime = DateTime.Now;
             entity.Description = CutString.CutWithOutHtml(entity.Contents, 200);
+            entity.CreateUserId = CurrentUserId;
             this.iNewsRepository.Save(entity);
 
             return new JsonResult

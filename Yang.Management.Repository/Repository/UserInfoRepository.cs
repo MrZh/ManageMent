@@ -91,8 +91,12 @@ namespace Yang.Management.Repository.Repository
                 userlogin.Name = entity.LoginName;
                 userlogin.UserId = entity.Id;
                 userlogin.RealName = entity.Name;
-                userlogin.PassWord = CommonEncrypt.Encrypt(entity.Password);
-                entity.Password = CommonEncrypt.Encrypt(entity.Password);
+                if (!string.IsNullOrWhiteSpace( entity.Password))
+                {
+                    userlogin.PassWord = CommonEncrypt.Encrypt(entity.Password);
+                    entity.Password = CommonEncrypt.Encrypt(entity.Password);
+                }
+                
                 this.context.UserLogin.Add(userlogin);
 
             }

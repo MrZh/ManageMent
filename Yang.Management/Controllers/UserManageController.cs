@@ -140,6 +140,7 @@ namespace Yang.Management.Controllers
             {
                 ViewBag.Name = user.Name;
                 ViewBag.DepartmentId = user.DepartmentId;
+                ViewBag.Resign = user.Resign;
             }
             return View();
         }
@@ -193,6 +194,7 @@ namespace Yang.Management.Controllers
             {
                 ViewBag.Name = user.Name;
                 ViewBag.DepartmentId = user.DepartmentId;
+                ViewBag.Salary = user.Salary;
             }
             return View();
         }

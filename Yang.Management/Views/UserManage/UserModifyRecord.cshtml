@@ -43,7 +43,7 @@
         <li class="layui-nav-item"><a href="/UserInfo/ChangePassword">密码修改</a></li>
     </ul>
     <div class="layui-site-content ">
-        <h1 class="layui-colla-title title-from">考勤管理</h1>
+        <h1 class="layui-colla-title title-from">人事变动记录</h1>
         <div class="layui-clear search-box">
             <div class="site-left">
                 <div class="site-content">
@@ -74,7 +74,7 @@
         <div class="layui-form">
             <table class="layui-table">
                 <colgroup>
-                    <col width="50">
+                    @*<col width="50">*@
                     <col width="150">
                     <col width="150">
                     <col width="200">
@@ -85,7 +85,7 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                        @*<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>*@
                         <th>姓名</th>
                         <th>调整时间</th>
                         <th>原部门</th>
@@ -105,7 +105,7 @@
     <script src="~/Content/jquery.tmpl.min.js"></script>
     <script type="text/x-jquery-tmpl" id="modify-tmpl">
         <tr>
-            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
+            @*<td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>*@
             <td>${UserName}</td>
             <td>${ModifyTime}</td>
             <td>${OrginalDepartmentName}</td>
@@ -142,7 +142,7 @@
             return false;
         });
 
-        $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -164,7 +164,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                 console.log(result.Data);
@@ -181,7 +181,7 @@
 
         var search = function () {
             userId = $("#user-data").val();
-            $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetModifyListByUserId", { userId: userId, pageIndex: 1, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'

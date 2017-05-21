@@ -32,8 +32,8 @@
         {
             <li class="layui-nav-item"><a href="/Attendance/Index">考勤管理</a></li>
             <li class="layui-nav-item"><a href="/Department/Index">部门管理</a></li>
-            <li class="layui-nav-item"><a href="/Resign/Index">职务管理</a></li>
-            <li class="layui-nav-item layui-this"><a href="/News/Index">公告管理</a></li>
+            <li class="layui-nav-item layui-this"><a href="/Resign/Index">职务管理</a></li>
+            <li class="layui-nav-item "><a href="/News/Index">公告管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/Index">人员管理</a></li>
             <li class="layui-nav-item"><a href="/UserManage/DimissRecord">离职登记记录</a></li>
             <li class="layui-nav-item"><a href="/UserManage/UserModifyRecord">人事调整记录</a></li>
@@ -116,7 +116,7 @@
             location.href = "/Login/Logout"
         });
 
-        $.get("/Resign/GetResigns", { key: keyword,pageIndex: 1,pageSize:2 }, function (result) {
+        $.get("/Resign/GetResigns", { key: keyword,pageIndex: 1,pageSize:10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -139,7 +139,7 @@
             return false;
         });
         var getPage = function (obj) {
-            $.get("/Resign/GetResigns", { key: keyword, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+            $.get("/Resign/GetResigns", { key: keyword, pageIndex: obj.curr, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                 console.log(result.Data);
@@ -150,7 +150,7 @@
 
         var search = function () {
             keyword = $("#key").val();
-            $.get("/Resign/GetResigns", { key: keyword, pageIndex: 1, pageSize: 2 }, function (result) {
+            $.get("/Resign/GetResigns", { key: keyword, pageIndex: 1, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'

@@ -74,7 +74,7 @@
         <div class="layui-form">
             <table class="layui-table">
                 <colgroup>
-                    <col width="50">
+                    @*<col width="50">*@
                     <col width="150">
                     <col width="150">
                     <col width="200">
@@ -83,7 +83,7 @@
                 </colgroup>
                 <thead>
                     <tr>
-                        <th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>
+                        @*<th><input type="checkbox" name="" lay-skin="primary" lay-filter="allChoose"></th>*@
                         <th>姓名</th>
                         <th>部门</th>
                         <th>申请时间</th>
@@ -101,7 +101,7 @@
     <script src="~/Content/jquery.tmpl.min.js"></script>
     <script type="text/x-jquery-tmpl" id="attendance-tmpl">
         <tr>
-            <td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>
+            @*<td><input type="checkbox" name="" value="${Id}" lay-skin="primary"></td>*@
             <td>${UserName}</td>
             <td>${DepartmentName}</td>
             <td>${ApplyTime}</td>
@@ -128,7 +128,7 @@
             location.href = "/Login/Logout"
         });
 
-        $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -157,7 +157,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: obj.curr, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                 console.log(result.Data);
@@ -174,7 +174,7 @@
 
         var search = function () {
             userId = $("#user-data").val();
-            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 2 }, function (result) {
+            $.get("/UserManage/GetDimissListByUserId", { userId: userId, pageIndex: 1, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'

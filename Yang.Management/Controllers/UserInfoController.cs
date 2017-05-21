@@ -52,12 +52,22 @@ namespace Yang.Management.Controllers
             {
                 status = 511;
                 message = "两次密码不一致";
+                return new JsonResult
+                {
+                    Data = new Result(status, null, message),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
 
             if (OldPassword == NewPassword)
             {
                 status = 511;
                 message = "新旧密码不能相同";
+                return new JsonResult
+                {
+                    Data = new Result(status, null, message),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
             var user = iUserLoginRepository.GetPassword(CurrentUserId);
             
@@ -65,18 +75,34 @@ namespace Yang.Management.Controllers
             {
                 status = 125;
                 message = "重新登录";
+                return new JsonResult
+                {
+                    Data = new Result(status, null, message),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
 
             }
-            if (user.PassWord.Equals(CommonEncrypt.Encrypt(OldPassword)))
+            if (!user.PassWord.Equals(CommonEncrypt.Encrypt(OldPassword)))
             {
                 status = 511;
                 message = "旧密码不正确";
+                return new JsonResult
+                {
+                    Data = new Result(status, null, message),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
             user.PassWord = CommonEncrypt.Encrypt(NewPassword);
             if (status == 200)
             {
                 iUserLoginRepository.Save(user);
+                return new JsonResult
+                {
+                    Data = new Result(status, null, message),
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
             }
+
             return new JsonResult
             {
                 Data = new Result(status, null, message),

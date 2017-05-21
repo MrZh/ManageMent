@@ -124,20 +124,20 @@
         });
         
 
-        $.get("/News/GetNewsByType", { type: 1, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/News/GetNewsByType", { type: 1, pageIndex: 1, pageSize: 10 }, function (result) {
             render(result.Data.Entity);
             form.render();
             return false;
         });
 
-        $.get("/MyAttendance/GetMyAttendanceList", { year: "", month: "", pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/MyAttendance/GetMyAttendanceList", { year: "", month: "", pageIndex: 1, pageSize: 10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             $("#attendance-tmpl").tmpl(result.Data.Entity).appendTo("#attendance-data");
             form.render();
             return false;
         });
 
-        $.get("/News/GetNewsByType", { type: 0, pageIndex: 1, pageSize: 2 }, function (result) {
+        $.get("/News/GetNewsByType", { type: 0, pageIndex: 1, pageSize: 10 }, function (result) {
             normalrender(result.Data.Entity);
             form.render();
             return false;

@@ -48,12 +48,12 @@
         <div class="layui-tab-item layui-show">
 
             <form class="layui-form form-them" action="">
-                <input type="hidden" value="@ViewBag.Id" name="UserId" />
+                <input type="hidden" value="@ViewBag.Id" name="ModifyUserId" />
 
                 <div class="layui-form-item">
                     <label class="layui-form-label">调整人员</label>
                     <div class="layui-input-block">
-                        <input type="text" name="Title" id="userName" readonly lay-verify="title" autocomplete="off" class="layui-input">
+                        <input type="text" name="Title" id="userName" readonly lay-verify="title" value="@ViewBag.Name" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -112,7 +112,7 @@
     <script>
 
         //一般直接写在一个js文件中
-        layui.use(['jquery', 'layer', 'form', 'element', 'laypage', 'laydate','layedit'], function () {
+        layui.use(['jquery', 'layer', 'form', 'element', 'laypage', 'laydate', 'layedit'], function () {
             var $ = layui.jquery,
                 layer = layui.layer,
                 form = layui.form(),
@@ -129,16 +129,14 @@
                     location.href = "/Login/Index";
                 }
 
-                $("#userName").text(result.Data.UserName);
                 $("#userinfo").text(result.Data.UserName);
-                $("#ori-resign").text(result.Data.Resign);
-                $("#ori-department").text(result.Data.DepartmentId);
 
                 return false;
             });
             $.get("/Department/GetAllDepartment", { type: "type" }, function (result) {
                 $(".department-data").empty();
                 $("#department-tmpl").tmpl(result.Data).appendTo(".department-data");
+                $("#ori-department").val('@ViewBag.DepartmentId');
                 form.render();
                 console.log(result);
                 return false;
@@ -147,6 +145,7 @@
             $.get("/Resign/GetAllResign", { type: "type" }, function (result) {
                 $(".resign-data").empty();
                 $("#department-tmpl").tmpl(result.Data).appendTo(".resign-data");
+                $("#ori-resign").val('@ViewBag.Resign');
                 form.render();
                 console.log(result);
                 return false;

@@ -121,7 +121,7 @@
             $("#userinfo").text(result.Data.UserName);
             return false;
         });
-        $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 4 }, function (result) {
+        $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 10 }, function (result) {
             //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
             laypage({
                 cont: 'demo1'
@@ -137,7 +137,7 @@
         });
 
         var getPage = function (obj) {
-            $.get("/News/GetNews", { key: keyword, pageIndex: obj.curr, pageSize: 4 }, function (result) {
+            $.get("/News/GetNews", { key: keyword, pageIndex: obj.curr, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 render(result.Data.Entity);
                // console.log(result.data);
@@ -149,7 +149,7 @@
 
         var search = function () {
             keyword = $("#key").val();
-            $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 4 }, function (result) {
+            $.get("/News/GetNews", { key: keyword, pageIndex: 1, pageSize: 10 }, function (result) {
                 //$("#news-type-tmpl").tmpl(result).appendTo("#news-type-data");
                 laypage({
                     cont: 'demo1'
